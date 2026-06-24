@@ -609,7 +609,7 @@
       <div class="step-content">
         <h4>Encontrar tu carpeta de skills</h4>
         <p>La carpeta de skills tiene un ID único por instalación. Para encontrarla, abre PowerShell y escribe:</p>
-        <pre>Get-ChildItem "$env:APPDATA\Claude\local-agent-mode-sessions\skills-plugin" -Recurse -Filter "skills" -Directory | Select-Object FullName</pre>
+        <pre>Get-ChildItem "$env:APPDATA\Claude\local-agent-mode-sessions\skills-plugin" -Recurse -Filter "skills" -Directory | Select-Object -ExpandProperty FullName</pre>
         <p>Debería aparecer una ruta como:</p>
         <pre>C:\Users\TU_USUARIO\AppData\Roaming\Claude\local-agent-mode-sessions\
   skills-plugin\XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\
