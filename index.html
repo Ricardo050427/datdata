@@ -326,7 +326,7 @@
   <ul>
     <li><strong>Tarjetas KPI</strong> — usando HTML Content: bonitas, con hover y badge de cambio vs período anterior</li>
     <li><strong>Gráficas</strong> — usando Deneb (Vega-Lite): interactivas, al hacer clic en una barra, todas las demás gráficas y tarjetas se filtran</li>
-    <li><strong>Barra de filtros</strong> — usando el visual personalizado Navara: pills con búsqueda, multi-select, y color coordinado con el dashboard</li>
+    <li><strong>Barra de filtros</strong> — usando un visual personalizado: filtros con búsqueda, multi-select, y color coordinado con el dashboard</li>
     <li><strong>Botones de navegación</strong> — usando botones nativos de Power BI</li>
   </ul>
 </section>
@@ -510,7 +510,7 @@
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <h4>Copiar el filtro Navara</h4>
+        <h4>Copiar el filtro personalizado</h4>
         <p>De la carpeta <code>EXPORTAR\navara\</code>, copia el archivo <code>.pbiviz</code> a un lugar conocido. Puedes ponerlo dentro del motor:</p>
         <pre>C:\Claude\pbi-motor\navara\navarafilter...1.1.0.0.pbiviz</pre>
         <p>Este archivo es el visual personalizado de filtros. Se importa en cada reporte nuevo desde Power BI (lo verás en la Sección 8).</p>
@@ -768,8 +768,8 @@ py pbir_tool.py --help</pre>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <h4>Importar el filtro Navara en Power BI (una sola vez por reporte)</h4>
-        <p>El filtro personalizado Navara no viaja dentro del archivo .pbip — hay que importarlo manualmente una vez por reporte:</p>
+        <h4>Importar el filtro personalizado en Power BI (una sola vez por reporte)</h4>
+        <p>El filtro personalizado no viaja dentro del archivo .pbip — hay que importarlo manualmente una vez por reporte:</p>
         <ol>
           <li>Abre el reporte en <strong>Power BI Desktop</strong></li>
           <li>Ve a <strong>Inicio → Más objetos visuales → Importar desde archivo</strong></li>
