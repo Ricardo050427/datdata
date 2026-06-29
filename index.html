@@ -390,9 +390,9 @@
 
 <div class="cover">
   <div class="method-tag">Metodolog&#237;a 1</div>
-  <h1>Conexi&#243;n de Claude<br>a Power BI via MCP</h1>
-  <p>Flujo ligero de chat + MCP: Claude se conecta a tu modelo, crea medidas DAX y genera specs de gr&#225;ficas. T&#250; colocas los visuales manualmente en el canvas.</p>
-  <p>Ideal para proyectos &#225;giles donde prefieres control directo sobre el layout.</p>
+  <h1>Conexi&#243;n de Claude AI<br>a Power BI Desktop</h1>
+  <p>Gu&#237;a de instalaci&#243;n y configuraci&#243;n del servidor MCP</p>
+  <p>Aprende a conectar el chat normal de Claude Desktop a tus informes para generar DAX y automatizar tareas de modelado de datos mediante lenguaje natural.</p>
   <br>
   <span class="badge">Power BI Desktop</span>
   <span class="badge">Claude Desktop</span>
@@ -403,13 +403,13 @@
 <div class="toc">
   <h2>Contenido</h2>
   <ol>
-    <li><a href="#m1-sec1">&#191;Qu&#233; permite esta metodolog&#237;a?</a></li>
+    <li><a href="#m1-sec1">&#191;Qu&#233; permite esta integraci&#243;n?</a></li>
     <li><a href="#m1-sec2">Prerrequisitos de software</a></li>
-    <li><a href="#m1-sec3">Instalaci&#243;n del Servidor MCP</a></li>
+    <li><a href="#m1-sec3">Instalaci&#243;n y extracci&#243;n del Servidor MCP</a></li>
     <li><a href="#m1-sec4">Configuraci&#243;n en Claude Desktop</a></li>
-    <li><a href="#m1-sec5">Tecnolog&#237;as de apoyo</a></li>
-    <li><a href="#m1-sec6">Las 7 Etapas del Flujo de Trabajo</a></li>
-    <li><a href="#m1-sec7">Skills Instalables para Claude</a></li>
+    <li><a href="#m1-sec5">Skills Instalables para Claude</a></li>
+    <li><a href="#m1-sec6">Tecnolog&#237;as de apoyo</a></li>
+    <li><a href="#m1-sec7">Las 7 Etapas del Flujo de Trabajo</a></li>
     <li><a href="#m1-sec8">Checklist de Sesi&#243;n</a></li>
   </ol>
 </div>
@@ -419,35 +419,19 @@
 <section id="m1-sec1">
   <div class="section-header">
     <div class="section-number">1</div>
-    <h2>&#191;Qu&#233; permite esta metodolog&#237;a?</h2>
+    <h2>&#191;Qu&#233; permite esta integraci&#243;n?</h2>
   </div>
-  <p>El protocolo MCP (Model Context Protocol) act&#250;a como un puente directo entre el chat est&#225;ndar de <strong>Claude Desktop</strong> y tu archivo abierto en <strong>Power BI Desktop</strong>. Claude se conecta localmente a tu modelo para crear medidas DAX, leer el esquema y generar specs de visuales, <em>sin que tengas que tocar el editor avanzado de PBI</em>.</p>
+  <p>El protocolo MCP (Model Context Protocol) act&#250;a como un puente directo entre el chat est&#225;ndar de <strong>Claude Desktop</strong> y tu archivo abierto en <strong>Power BI Desktop</strong>. En lugar de escribir c&#243;digo a mano o copiar y pegar, Claude se conecta localmente a tu modelo para crear tablas, medidas DAX y establecer relaciones de forma autom&#225;tica.</p>
   <div class="box purple">
-    <div class="box-title">C&#243;mo funciona en la pr&#225;ctica</div>
-    <p>Con tu reporte abierto en Power BI, le dices a Claude: <em>"Crea una medida DAX que calcule el promedio de tickets por agente para el mes seleccionado."</em></p>
-    <p>Claude lee el esquema de tus tablas actuales v&#237;a MCP y escribe la medida directamente en tu modelo, sin que tengas que abrir el editor avanzado.</p>
+    <div class="box-title">Ejemplo de uso en un inicio</div>
+    <p>"Con tu informe abierto, le dices a Claude desde el chat: Vamos a empezar un nuevo Dashboard usando una metodolog&#237;a en el archivo que tengo abierto de PowerBI, as&#237; que, con&#233;ctate a el."</p>
+    <p>Claude recibe la instrucci&#243;n y se conecta autom&#225;ticamente al archivo de PowerBI</p>
   </div>
-  <div class="box info">
-    <div class="box-title">Diferencia con Metodolog&#237;a 2</div>
-    <p>En M1, <strong>t&#250; colocas los visuales manualmente</strong> en el canvas de Power BI. Claude se encarga de la l&#243;gica (DAX), entrega el JSON de las gr&#225;ficas Deneb para que lo pegues, y puede compilar el filtro personalizado.</p>
-    <p>En M2 (Motor Automatizado), Claude tambi&#233;n coloca los visuales autom&#225;ticamente mediante scripts Python.</p>
+  <div class="box purple">
+    <div class="box-title">Ejemplo de uso en un proyecto real</div>
+    <p>"Con tu informe abierto ya con las tablas de datos insertadas, le dices a Claude desde el chat: Crea una medida DAX que calcule una tendencia mostrando el crecimiento real de tickets por mes."</p>
+    <p>Claude recibe la instrucci&#243;n, lee el esquema de tus tablas actuales en Power BI y resuelve directamente en tu modelo sin que tengas que tocar el editor avanzado.</p>
   </div>
-  <h3>Lo que Claude hace por ti en M1</h3>
-  <table>
-    <tr><th>Tarea</th><th>Herramienta</th><th>PBI debe estar</th></tr>
-    <tr><td>Crear / editar medidas DAX</td><td>MCP Power BI</td><td>ABIERTO</td></tr>
-    <tr><td>Leer el esquema del modelo</td><td>MCP Power BI</td><td>ABIERTO</td></tr>
-    <tr><td>Generar specs Deneb (JSON)</td><td>Chat &#8212; copiar y pegar</td><td>ABIERTO</td></tr>
-    <tr><td>Crear medidas HTML para KPIs</td><td>MCP Power BI</td><td>ABIERTO</td></tr>
-    <tr><td>Compilar el filtro personalizado</td><td>Chat (TypeScript)</td><td>Cualquiera</td></tr>
-  </table>
-  <h3>Lo que t&#250; haces</h3>
-  <ul>
-    <li>Insertar los visuales en el canvas (Deneb, HTML Content, Filtro)</li>
-    <li>Arrastrar medidas al campo "Values" de cada visual</li>
-    <li>Pegar el JSON de Deneb en "Edit specification"</li>
-    <li>Ajustar el layout y tama&#241;os a tu gusto</li>
-  </ul>
 </section>
 
 <section id="m1-sec2">
@@ -455,32 +439,20 @@
     <div class="section-number">2</div>
     <h2>Prerrequisitos de software</h2>
   </div>
-  <p>Para esta metodolog&#237;a solo necesitas estos programas. Las instalaciones pueden hacerse con las opciones por defecto.</p>
+  <p>Para establecer este puente de comunicaci&#243;n, necesitaremos instalar dos programas base. Las instalaciones pueden hacerse con las opciones por defecto.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
         <h4>Claude Desktop</h4>
-        <p>Descarga la aplicaci&#243;n desde <strong>claude.ai</strong>. Aunque la versi&#243;n gratuita funciona, es recomendable usar la versi&#243;n de pago (Claude Pro): los l&#237;mites de la versi&#243;n gratuita se consumen r&#225;pidamente al enviar esquemas completos de bases de datos.</p>
+        <p>Descarga la aplicaci&#243;n nativa de escritorio desde la p&#225;gina oficial de Anthropic. <strong>Nota importante:</strong> Aunque la versi&#243;n gratuita funciona, es sumamente recomendable utilizar la versi&#243;n de pago (Claude Pro), ya que la versi&#243;n gratuita tiene l&#237;mites de cr&#233;ditos estrictos que se consumir&#225;n r&#225;pidamente al enviarle esquemas completos de bases de datos a la IA.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
         <h4>Visual Studio Code (VS Code)</h4>
-        <p>Descarga el editor gratuito de Microsoft desde <strong>code.visualstudio.com</strong>. No programar&#225;s en VS Code &#8212; solo lo necesitas para instalar la extensi&#243;n del servidor MCP en tu computadora.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <h4>Power BI Desktop + custom visuals</h4>
-        <p>Descarga Power BI Desktop desde la <strong>Microsoft Store</strong> o desde <strong>powerbi.microsoft.com/desktop</strong>. Despu&#233;s de instalar, importa los custom visuals desde AppSource:</p>
-        <ol>
-          <li>PBI Desktop &#8594; <strong>Inicio</strong> &#8594; <strong>M&#225;s objetos visuales</strong> &#8594; <strong>Desde AppSource</strong></li>
-          <li>Busca <strong>Deneb</strong> &#8594; Agregar</li>
-          <li>Busca <strong>HTML Content</strong> (de Nova Silva / Daniel Marsh-Patrick) &#8594; Agregar</li>
-        </ol>
+        <p>Descarga el editor de c&#243;digo gratuito de Microsoft. <strong>Ojo:</strong> No vamos a programar en VS Code ni le daremos instrucciones desde all&#237;. Solo lo utilizaremos como veh&#237;culo para instalar la extensi&#243;n del servidor MCP en nuestra computadora.</p>
       </div>
     </div>
   </div>
@@ -489,24 +461,31 @@
 <section id="m1-sec3">
   <div class="section-header">
     <div class="section-number">3</div>
-    <h2>Instalaci&#243;n del Servidor MCP</h2>
+    <h2>Instalaci&#243;n y extracci&#243;n del Servidor MCP</h2>
   </div>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
         <h4>Instalar la extensi&#243;n en VS Code</h4>
-        <p>Abre Visual Studio Code &#8594; panel de <strong>Extensiones</strong> (<code>Ctrl+Shift+X</code>). Busca <strong>Power BI Modeling MCP</strong> y aseg&#250;rate de que el proveedor sea <strong>Microsoft</strong>. Haz clic en Instalar. Al terminar, puedes cerrar VS Code.</p>
+        <p>Abre Visual Studio Code y dir&#237;gete al panel izquierdo en el &#237;cono de <strong>Extensiones</strong> (o presiona <code>Ctrl+Shift+X</code>).</p>
+        <p>En el buscador escribe <strong>MCP</strong>. Busca la extensi&#243;n <em>Power BI Modeling MCP</em> y aseg&#250;rate de que el proveedor oficial sea <strong>Microsoft</strong>. Haz clic en instalar. Una vez que termine, puedes cerrar VS Code completamente.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h4>Encontrar la ruta del ejecutable</h4>
-        <p>Abre PowerShell y ejecuta:</p>
-        <pre>Get-ChildItem "$env:USERPROFILE\.vscode\extensions" | Where-Object { $_.Name -like "*powerbi*" }</pre>
-        <p>Ver&#225;s algo como <code>analysis-services.powerbi-modeling-mcp-0.4.0-win32-x64</code>. Anota ese nombre de carpeta.</p>
-        <p>El ejecutable est&#225; dentro de esa carpeta en la subcarpeta <code>server\</code>. Para copiar la ruta exacta, navega en el Explorador de archivos a <code>%userprofile%\.vscode\extensions\[carpeta]\server\</code>, haz clic derecho sobre el archivo <code>.exe</code> y selecciona <strong>"Copiar como ruta de acceso"</strong>.</p>
+        <h4>Extraer la ruta del servidor</h4>
+        <p>Abre tu explorador de archivos en Windows. En la barra superior de b&#250;squeda, escribe exactamente lo siguiente y presiona Enter:</p>
+        <pre>%userprofile%</pre>
+        <p>Navega a trav&#233;s de las siguientes carpetas:</p>
+        <ol>
+          <li>Abre la carpeta <code>.vscode</code></li>
+          <li>Entra a <code>extensions</code></li>
+          <li>Busca la carpeta de la extensi&#243;n instalada (suele llamarse <code>analysis-services.powerbi-modeling-mcp...</code>)</li>
+          <li>Entra a <code>server</code></li>
+        </ol>
+        <p>All&#237; encontrar&#225;s un archivo ejecutable llamado <strong>PowerBI_Modeling_MCP</strong> (o un nombre similar dependiendo de la versi&#243;n). Haz clic derecho sobre &#233;l y selecciona la opci&#243;n <strong>"Copiar como ruta de acceso"</strong>.</p>
       </div>
     </div>
   </div>
@@ -517,45 +496,42 @@
     <div class="section-number">4</div>
     <h2>Configuraci&#243;n en Claude Desktop</h2>
   </div>
+  <p>Ahora le indicaremos a Claude d&#243;nde se encuentra este servidor para que pueda ejecutarlo y conectarse a Power BI.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <h4>Abrir el archivo de configuraci&#243;n</h4>
-        <p>Abre <strong>Claude Desktop</strong> &#8594; tu perfil &#8594; <strong>Ajustes</strong> &#8594; panel izquierdo &#8594; <strong>Desarrollador</strong> &#8594; clic en el bot&#243;n para editar la configuraci&#243;n de MCP. Se abrir&#225; el archivo <code>claude_desktop_config.json</code>.</p>
-        <p>Alternativamente, desde PowerShell:</p>
-        <pre>notepad "$env:APPDATA\Claude\claude_desktop_config.json"</pre>
-        <p>Si el archivo no existe, se abre en blanco &#8212; est&#225; bien, lo crear&#225;s t&#250;.</p>
+        <h4>Abrir el archivo de Ajustes</h4>
+        <p>Abre <strong>Claude Desktop</strong>. Ve a tu perfil en la esquina superior y selecciona el men&#250; de <strong>Configuraci&#243;n</strong>.</p>
+        <p>En el panel izquierdo, baja hasta la secci&#243;n que dice <strong>Desarrollador</strong>. Haz clic en el bot&#243;n para editar la configuraci&#243;n de MCP. Esto abrir&#225; un archivo <code>claude_desktop_config.json</code> en tu Bloc de Notas.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h4>Agregar la configuraci&#243;n del MCP</h4>
-        <p>Pega o agrega esto (reemplaza la ruta con la que copiaste antes):</p>
+        <h4>Inyectar el c&#243;digo y formatear la ruta</h4>
+        <p>Reemplaza el contenido del Bloc de Notas con la estructura base del MCP de Power BI, pero deber&#225;s pegar la ruta que copiaste en el paso anterior en la propiedad "command". Tu archivo deber&#237;a quedar similar a esto:</p>
         <pre>{
   "mcpServers": {
     "powerbi-modeling-mcp": {
-      "command": "C:\\Users\\TuUsuario\\.vscode\\extensions\\analysis-services.powerbi-modeling-mcp-0.4.0-win32-x64\\server\\powerbi-modeling-mcp.exe",
+      "command": "C:\\Users\\TuUsuario\\.vscode\\extensions\\analysis-services.powerbi-modeling-mcp-0.4.0-win32-x64\\server\\PowerBI_Modeling_MCP.exe",
       "args": ["--start"],
       "env": {}
     }
   }
 }</pre>
         <div class="box warn">
-          <div class="box-title">Barras dobles obligatorias</div>
-          En JSON, las rutas de Windows deben usar barras dobles: <code>C:\\Users\\...</code>. Si pegaste la ruta con barras simples, usa <code>Ctrl+H</code> en el Bloc de Notas para reemplazar <code>\</code> por <code>\\</code> antes de guardar.
+          <div class="box-title">Importante: Las dobles barras</div>
+          Cuando copies tu ruta, Windows usar&#225; barras simples (<code>\</code>). Para que el archivo JSON sea v&#225;lido, debes presionar <code>Ctrl+H</code> en el Bloc de Notas y reemplazar todas las barras simples (<code>\</code>) por barras dobles (<code>\\</code>). Guarda los cambios en el archivo y ci&#233;rralo.
         </div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h4>Reiniciar y verificar</h4>
-        <p>Cierra Claude Desktop completamente &#8212; <strong>no basta con cerrar la ventana</strong>. Ve a la barra de tareas de Windows, clic derecho en el &#237;cono de Claude &#8594; <strong>Salir</strong>. Vuelve a abrir.</p>
-        <p>Para verificar, ve a <strong>Ajustes &#8594; Desarrollador</strong> &#8212; el servidor MCP debe aparecer como conectado. O en una sesi&#243;n nueva, con PBI abierto, escribe:</p>
-        <pre>Conecta al modelo de Power BI que tengo abierto</pre>
-        <p>Claude deber&#237;a listar las instancias disponibles y conectarse.</p>
+        <h4>Reiniciar y Validar</h4>
+        <p>Es indispensable reiniciar la aplicaci&#243;n de Claude. <strong>No basta con cerrar la ventana.</strong> Ve a la barra de tareas de Windows (cerca del reloj), haz clic derecho en el &#237;cono de Claude y selecciona <strong>Salir</strong>.</p>
+        <p>Vuelve a abrir Claude Desktop, entra de nuevo a <strong>Configuraci&#243;n &gt; Desarrollador</strong> y revisa el estatus. Deber&#237;a indicar que el servidor MCP se ha conectado y est&#225; corriendo exitosamente.</p>
       </div>
     </div>
   </div>
@@ -564,28 +540,71 @@
 <section id="m1-sec5">
   <div class="section-header">
     <div class="section-number">5</div>
-    <h2>Tecnolog&#237;as de apoyo</h2>
+    <h2>Skills Instalables para Claude</h2>
   </div>
+  <p>Las siguientes skills pueden instalarse en Claude para automatizar partes espec&#237;ficas de esta metodolog&#237;a.</p>
+  <table>
+    <tr>
+      <th>Skill</th>
+      <th>Descripci&#243;n</th>
+    </tr>
+    <tr>
+      <td><strong>powerbi-dashboard-builder</strong></td>
+      <td>Skill principal. Orquesta las etapas 1-5. Conecta al modelo abierto via MCP autom&#225;ticamente.</td>
+    </tr>
+    <tr>
+      <td><strong>deneb-chart-generator</strong></td>
+      <td>Genera specs de Vega-Lite para Deneb a partir de una descripci&#243;n o imagen de referencia.</td>
+    </tr>
+    <tr>
+      <td><strong>html-kpi-cards</strong></td>
+      <td>Construye medidas DAX de tipo HTML Content para tarjetas KPI y badges de estado.</td>
+    </tr>
+    <tr>
+      <td><strong>powerbi-dax-auditor</strong></td>
+      <td>Audita el modelo en busca de problemas (blanks, medidas hu&#233;rfanas) y propone correcciones.</td>
+    </tr>
+    <tr>
+      <td><strong>skill-creator</strong></td>
+      <td>Es una herramienta que redacta y formatea autom&#225;ticamente nuevas skills para Claude bas&#225;ndose en la descripci&#243;n de la tarea que deseas automatizar.</td>
+    </tr>
+  </table>
+  <h3>C&#243;mo instalar las skills:</h3>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <h4>Power BI MCP</h4>
-        <p>Conexi&#243;n directa al modelo sem&#225;ntico abierto en Power BI Desktop. Claude puede leer tablas, medidas y relaciones, y crear o modificar medidas DAX sin intervenci&#243;n manual.</p>
+        <h4>Ir a la configuraci&#243;n de Claude</h4>
+        <p>Abre la aplicaci&#243;n de Claude Desktop y dir&#237;gete al men&#250; principal. Haz clic en la opci&#243;n <strong>Customize</strong> (Personalizar).</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h4>Deneb (Vega-Lite)</h4>
-        <p>Motor de visualizaci&#243;n declarativa que permite gr&#225;ficas imposibles con visuals nativos: degradados, anotaciones condicionales, cross-filter al hacer clic, hover interactivo. Claude genera el JSON completo; t&#250; lo pegas en el editor de Deneb.</p>
+        <h4>Crear nuevas habilidades</h4>
+        <p>Dentro del men&#250; Customize, selecciona la opci&#243;n <strong>Habilidades</strong>.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h4>HTML Content</h4>
-        <p>Tarjetas KPI con dise&#241;o a medida, badges de cambio vs per&#237;odo anterior y hover animado. Se construyen como medidas DAX que devuelven HTML/CSS. Claude las crea directamente en tu modelo v&#237;a MCP.</p>
+        <h4>Desplegar men&#250; de creaci&#243;n</h4>
+        <p>En el panel izquierdo, haz clic en el &#237;cono de <strong>m&#225;s (+)</strong> que se encuentra junto a la barra de b&#250;squeda de Habilidades. Luego, selecciona <strong>Crear habilidad</strong> (Create skill).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Subir la habilidad</h4>
+        <p>En el men&#250; desplegable, selecciona la opci&#243;n <strong>Subir una habilidad</strong> (Upload a skill).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Cargar el archivo</h4>
+        <p>Se abrir&#225; una ventana. Aqu&#237; deber&#225;s <strong>arrastrar y soltar</strong> o hacer clic para cargar los archivos correspondientes a las <em>skills</em> (<code>.md</code>, <code>.zip</code> o <code>.skill</code>). Repite el proceso para cada una de las 5 skills.</p>
+        Link para descargar las skills: https://drive.google.com/drive/folders/1BXyo1KvI6fctRvzEKfRlPMbXcenKYjj3?usp=drive_link
       </div>
     </div>
   </div>
@@ -594,57 +613,28 @@
 <section id="m1-sec6">
   <div class="section-header">
     <div class="section-number">6</div>
-    <h2>Las 7 Etapas del Flujo de Trabajo</h2>
+    <h2>Tecnolog&#237;as de apoyo</h2>
   </div>
-  <p>Las etapas 1&#8211;5 son colaborativas (Claude + t&#250;). La etapa 6 (layout) es tuya, con Claude en modo soporte. La etapa 7 es de revisi&#243;n iterativa.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <h4>Ingesta y diagn&#243;stico de datos</h4>
-        <p>Claude se conecta al modelo v&#237;a MCP y realiza un an&#225;lisis autom&#225;tico: tipos de columnas, nulos, duplicados, dimensiones candidatas y hechos. Se&#241;ala problemas de calidad antes de modelar.</p>
+        <h4>Power BI MCP</h4>
+        <p>Conexi&#243;n directa al modelo sem&#225;ntico abierto. Claude puede leer tablas, medidas, relaciones y crear/modificar medidas DAX sin intervenci&#243;n manual.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h4>Intenci&#243;n del dashboard</h4>
-        <p>T&#250; declaras el objetivo del dashboard y los KPIs mandatorios. Esta es la etapa m&#225;s importante: todo lo que Claude construya gira en torno a esta intenci&#243;n declarada.</p>
+        <h4>Deneb (Vega-Lite)</h4>
+        <p>Motor de visualizaci&#243;n declarativa que permite gr&#225;ficas imposibles con visuals nativos: degradados, anotaciones condicionales, microcharts, layouts custom.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h4>Dise&#241;o del modelo sem&#225;ntico</h4>
-        <p>Claude revisa el esquema del modelo abierto en PBI para confirmar que tiene lo necesario para los KPIs de la Etapa 2. Detecta tablas faltantes o relaciones incorrectas.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <h4>Construcci&#243;n de medidas DAX</h4>
-        <p>Claude escribe y sube las medidas directamente al modelo v&#237;a MCP. Las crea en orden: primero las base (conteos, sumas), luego variaciones de per&#237;odo, luego las medidas HTML para tarjetas KPI.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">5</div>
-      <div class="step-content">
-        <h4>Generaci&#243;n de visuales</h4>
-        <p>Claude entrega el JSON completo de cada gr&#225;fica Deneb (listo para pegar) y puede compilar e instalar el filtro personalizado. T&#250; insertas los visuals en el canvas y pegas los specs.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">6</div>
-      <div class="step-content">
-        <h4>Layout y publicaci&#243;n</h4>
-        <p>Esta etapa es tuya. Claude entrega una gu&#237;a de layout espec&#237;fica: qu&#233; visual va d&#243;nde, tama&#241;os recomendados, orden de capas. T&#250; armas el canvas en PBI.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">7</div>
-      <div class="step-content">
-        <h4>Revisi&#243;n y correcciones</h4>
-        <p>Con el dashboard armado, Claude queda en modo soporte activo: ajusta colores, corrige medidas, modifica el JSON de Deneb. Puedes iterar las veces que necesites.</p>
+        <h4>HTML Content</h4>
+        <p>Tarjetas KPI, tablas con formato avanzado e iconograf&#237;a din&#225;mica construidas con HTML/CSS puro, reactivas al contexto de filtro de Power BI.</p>
       </div>
     </div>
   </div>
@@ -653,61 +643,59 @@
 <section id="m1-sec7">
   <div class="section-header">
     <div class="section-number">7</div>
-    <h2>Skills Instalables para Claude</h2>
+    <h2>Las 7 Etapas del Flujo de Trabajo</h2>
   </div>
-  <p>Las skills son archivos de instrucciones que le ense&#241;an a Claude cu&#225;ndo y c&#243;mo comportarse. Al instalarlas, Claude activa autom&#225;ticamente el flujo correcto sin que tengas que explicarle cada vez.</p>
-  <table>
-    <tr><th>Skill</th><th>Descripci&#243;n</th></tr>
-    <tr>
-      <td><strong>powerbi-mcp-flow</strong></td>
-      <td>Orquestador principal de M1. Activa el flujo de 7 etapas, conecta al modelo v&#237;a MCP y genera instrucciones de colocaci&#243;n para cada visual.</td>
-    </tr>
-    <tr>
-      <td><strong>deneb-chart-generator</strong></td>
-      <td>Genera specs Vega-Lite completas para Deneb: barras, l&#237;neas, donut. Con cross-filter y hover interactivo incorporados.</td>
-    </tr>
-    <tr>
-      <td><strong>html-kpi-cards</strong></td>
-      <td>Construye medidas DAX de tipo HTML Content para tarjetas KPI con dise&#241;o, hover, badge de cambio vs per&#237;odo y tooltip.</td>
-    </tr>
-    <tr>
-      <td><strong>powerbi-dax-auditor</strong></td>
-      <td>Audita el modelo en busca de blanks, medidas hu&#233;rfanas y problemas de cardinalidad. Propone correcciones.</td>
-    </tr>
-  </table>
-  <h3>C&#243;mo instalar las skills</h3>
+  <p>El flujo est&#225; dividido en 7 etapas. Las etapas 1-5 son colaborativas (Claude + Analista). Las etapas 6-7 son del Analista con Claude en modo soporte.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <h4>Abrir el men&#250; Customize en Claude Desktop</h4>
-        <p>Abre Claude Desktop y ve al men&#250; principal. Haz clic en la opci&#243;n <strong>Customize</strong> (Personalizar).</p>
+        <h4>Ingesta y diagn&#243;stico de datos</h4>
+        <p>Claude realiza un an&#225;lisis autom&#225;tico antes de cualquier construcci&#243;n. Revisa tipos de columnas, nulos, duplicados y outliers. Identifica dimensiones candidatas y hechos. Por &#250;ltimo, se&#241;ala problemas de calidad que deben resolverse antes de modelar.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h4>Crear nueva habilidad</h4>
-        <p>En el panel izquierdo de Customize, haz clic en el &#237;cono <strong>+</strong> junto a la barra de b&#250;squeda de Habilidades. Selecciona <strong>Crear habilidad</strong> &#8594; <strong>Subir una habilidad</strong>.</p>
+        <h4>Intenci&#243;n del dashboard</h4>
+        <p>Esta es la etapa m&#225;s importante del flujo. Lo que el analista declare como objetivo del dashboard es mandatorio. Claude acata la intenci&#243;n y construye todo en funci&#243;n de ella.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h4>Cargar el archivo SKILL.md</h4>
-        <p>Arrastra y suelta el archivo <code>SKILL.md</code> de la skill que quieres instalar, o navega hasta &#233;l. Repite para cada una de las 4 skills del paquete M1.</p>
-        <div class="box info">
-          <div class="box-title">Alternativa: instalaci&#243;n por carpeta</div>
-          <p>Desde PowerShell, encuentra la carpeta de skills de Claude Desktop:</p>
-          <pre>Get-ChildItem "$env:APPDATA\Claude\local-agent-mode-sessions\skills-plugin" -Recurse -Filter "skills" -Directory</pre>
-          <p>Copia las carpetas de skills a esa ruta y reinicia Claude Desktop.</p>
-        </div>
+        <h4>Dise&#241;o del modelo sem&#225;ntico</h4>
+        <p>El modelo se dise&#241;a para servir los KPIs mandatorios de la Etapa 2. Claude se conecta al modelo abierto en Power BI Desktop para confirmar que el esquema coincide con lo dise&#241;ado y detectar particiones sin datos.</p>
       </div>
     </div>
-  </div>
-  <div class="box info">
-    <div class="box-title">&#191;Cu&#225;ndo se activan las skills?</div>
-    Las skills se activan <strong>autom&#225;ticamente</strong> cuando Claude detecta el contexto correcto. Mencionar "dashboard", "gr&#225;fica" o "tarjeta KPI" basta para que Claude sepa qu&#233; hacer.
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Construcci&#243;n de medidas DAX</h4>
+        <p>Claude escribe y sube las medidas directamente al modelo abierto via MCP. Las medidas se construyen en el orden dictado por la intenci&#243;n declarada en Etapa 2.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Dise&#241;o de visuales y estilo</h4>
+        <p>El dise&#241;o sigue una jerarqu&#237;a clara: primero la intenci&#243;n del analista, luego el criterio de Claude.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <h4>Layout y publicaci&#243;n</h4>
+        <p>Esta etapa queda a cargo del analista. Claude entrega una gu&#237;a de layout espec&#237;fica para el dashboard construido, no gen&#233;rica.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <h4>Revisi&#243;n y correcciones</h4>
+        <p>Una vez que el analista tiene el dashboard armado en el canvas, Claude queda en modo de soporte activo para correcciones.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -716,24 +704,18 @@
     <div class="section-number">8</div>
     <h2>Checklist de Sesi&#243;n</h2>
   </div>
-  <p>Usa este checklist al iniciar cada nuevo proyecto de dashboard:</p>
+  <p>Usar este checklist al iniciar cada nuevo proyecto de dashboard:</p>
   <ul>
-    <li><strong>Datos cargados:</strong> El archivo .pbip o .pbix tiene las tablas importadas y el modelo listo.</li>
-    <li><strong>Power BI Desktop abierto</strong> con el reporte activo (necesario para la conexi&#243;n MCP).</li>
-    <li><strong>Intenci&#243;n declarada:</strong> Define el objetivo del dashboard y los KPIs que debe responder.</li>
-    <li><strong>Deneb y HTML Content importados</strong> en el reporte (una vez por reporte nuevo, desde AppSource).</li>
-    <li><strong>Filtro importado</strong> (si usas el visual de filtros): Inicio &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo &#8594; seleccionar el .pbiviz.</li>
-    <li><strong>Paleta de colores:</strong> Un hex de acento principal (ej. <code>#6A0DAD</code>). Si no se define, Claude elige.</li>
-    <li><strong>Granularidad temporal:</strong> &#191;El dashboard filtra por d&#237;a, semana, mes?</li>
-    <li><strong>Audiencia:</strong> &#191;Qui&#233;n usar&#225; el dashboard? &#191;Con qu&#233; frecuencia?</li>
+    <li><strong>Datos recibidos:</strong> CSV, Excel o conexi&#243;n directa a BD disponible.</li>
+    <li><strong>Power BI Desktop abierto:</strong> Archivo.pbix abierto para conexi&#243;n MCP.</li>
+    <li><strong>Intenci&#243;n del dashboard declarada:</strong> El analista defini&#243; el objetivo principal y los KPIs mandatorios.</li>
+    <li><strong>Referencia de dise&#241;o (opcional):</strong> Captura, paleta o descripci&#243;n de estilo. Si no se da, Claude decide.</li>
+    <li><strong>Audiencia del dashboard:</strong> &#191;Qui&#233;n lo usa? &#191;Con qu&#233; frecuencia?</li>
+    <li><strong>Fuente de datos confirmada:</strong> Ruta local o conexi&#243;n a servidor validada.</li>
+    <li><strong>Granularidad temporal definida:</strong> &#191;Diario, semanal, mensual?</li>
+    <li><strong>Fechas del per&#237;odo de an&#225;lisis:</strong> Rango hist&#243;rico disponible.</li>
+    <li><strong>Etapa 7 activada (si aplica):</strong> El analista puede pedir correcciones en cualquier momento despu&#233;s del layout.</li>
   </ul>
-  <div class="box tip">
-    <div class="box-title">Para empezar</div>
-    <p>Con todo lo anterior listo, abre una sesi&#243;n en Claude Desktop y escribe:</p>
-    <pre>Vamos a empezar un dashboard nuevo usando la metodologia MCP + Chat.
-Tengo un archivo de Power BI abierto. Conectate al modelo.</pre>
-    <p>Claude activar&#225; el flujo, se conectar&#225; al modelo y te guiar&#225; paso a paso por las 7 etapas.</p>
-  </div>
 </section>
 
 </div><!-- /content M1 -->
