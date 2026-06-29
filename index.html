@@ -735,7 +735,7 @@
   <div class="method-tag">Metodolog&#237;a 2</div>
   <h1>Sistema de Dashboards<br>Power BI con Claude</h1>
   <p>Flujo automatizado completo: Claude dise&#241;a, construye y coloca todos los visuales usando scripts Python. T&#250; describes lo que necesitas; Claude entrega el dashboard listo.</p>
-  <p>Ideal para proyectos donde quieres m&#225;xima automatizaci&#243;n y layouts reproducibles.</p>
+  <p>El instalador <code>setup.ps1</code> configura todo autom&#225;ticamente en tu m&#225;quina.</p>
   <br>
   <span class="badge">Python 3</span>
   <span class="badge">Power BI Desktop</span>
@@ -748,14 +748,12 @@
   <ol>
     <li><a href="#m2-sec1">&#191;Qu&#233; es este sistema?</a></li>
     <li><a href="#m2-sec2">Archivos incluidos en este paquete</a></li>
-    <li><a href="#m2-sec3">Instalar los prerrequisitos de software</a></li>
-    <li><a href="#m2-sec4">Copiar los archivos del motor a tu m&#225;quina</a></li>
-    <li><a href="#m2-sec5">Configurar el MCP de Power BI en Claude</a></li>
-    <li><a href="#m2-sec6">Instalar las skills en Claude</a></li>
-    <li><a href="#m2-sec7">Verificar que todo funciona</a></li>
-    <li><a href="#m2-sec8">Iniciar el primer proyecto</a></li>
-    <li><a href="#m2-sec9">Referencia r&#225;pida de comandos</a></li>
-    <li><a href="#m2-sec10">Soluci&#243;n de problemas frecuentes</a></li>
+    <li><a href="#m2-sec3">Instalar los programas base</a></li>
+    <li><a href="#m2-sec4">Ejecutar el instalador autom&#225;tico</a></li>
+    <li><a href="#m2-sec5">Verificar que todo funciona</a></li>
+    <li><a href="#m2-sec6">Iniciar el primer proyecto</a></li>
+    <li><a href="#m2-sec7">Referencia r&#225;pida de comandos</a></li>
+    <li><a href="#m2-sec8">Soluci&#243;n de problemas frecuentes</a></li>
   </ol>
 </div>
 
@@ -799,44 +797,40 @@
   <p>La carpeta <code>EXPORTAR</code> que acompa&#241;a este tutorial tiene esta estructura:</p>
   <div class="file-tree">
     <span class="folder">EXPORTAR/</span><br>
-    &nbsp;&nbsp;<span class="folder">motor/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; scripts Python que Claude usa (solo M2)</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pbir_tool.py</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; CLI principal del motor</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pbir_templates.py</span>&nbsp;&nbsp;<span class="note">&#8592; f&#225;bricas de visuales (card, deneb, filtro...)</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pbir_layout.py</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; motor de grid / posicionamiento</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pbi.ps1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; wrapper PowerShell (el comando que se usa)</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SISTEMA.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; referencia t&#233;cnica que Claude lee</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">filtros_test.json</span>&nbsp;&nbsp;<span class="note">&#8592; spec de ejemplo para pruebas</span><br>
-    &nbsp;&nbsp;<span class="folder">skills/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; instrucciones de comportamiento para Claude</span><br>
+    &nbsp;&nbsp;<span class="file">setup.ps1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; instalador autom&#225;tico (ejecutar esto primero)</span><br>
+    &nbsp;&nbsp;<span class="folder">motor/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; scripts Python que Claude usa</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pbir_tool.py</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; CLI principal del motor</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pbir_templates.py</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; f&#225;bricas de visuales (card, deneb, filtro...)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pbir_layout.py</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; motor de grid / posicionamiento</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pbi.ps1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; wrapper PowerShell (el comando que se usa)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SISTEMA.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; referencia t&#233;cnica que Claude lee</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">filtros_test.json</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; spec de ejemplo para pruebas</span><br>
+    &nbsp;&nbsp;<span class="folder">skills/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; instrucciones de comportamiento para Claude</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">powerbi-dashboard-builder/</span>&nbsp;&nbsp;<span class="note">&#8592; orquestador M2 (motor completo)</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">powerbi-mcp-flow/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; orquestador M1 (MCP + Chat)</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">powerbi-mcp-flow/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; orquestador M1 (MCP + Chat)</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">deneb-chart-generator/</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; genera gr&#225;ficas Vega-Lite</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; genera gr&#225;ficas Vega-Lite</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">html-kpi-cards/</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; genera tarjetas HTML</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; genera tarjetas HTML</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">powerbi-dax-auditor/</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; audita el modelo de datos</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; audita el modelo de datos</span><br>
+    &nbsp;&nbsp;<span class="folder">navara/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">*.pbiviz</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; visual Filtro compilado (se copia autom&#225;ticamente)</span>
   </div>
   <div class="box info">
     <div class="box-title">&#191;Qu&#233; son los SKILL.md?</div>
     Los archivos SKILL.md son instrucciones que le dicen a Claude c&#243;mo comportarse. No son c&#243;digo que se ejecuta &#8212; son gu&#237;as de comportamiento que Claude lee internamente y que activan el flujo correcto seg&#250;n el contexto.
-  </div>
-  <div class="box info">
-    <div class="box-title">El visual Filtro</div>
-    El visual personalizado Filtro (barra de pills con b&#250;squeda) se compila por separado desde c&#243;digo TypeScript. El archivo <code>.pbiviz</code> compilado se distribuye independientemente de la carpeta EXPORTAR y se importa una vez por reporte en Power BI Desktop.
   </div>
 </section>
 
 <section id="m2-sec3">
   <div class="section-header">
     <div class="section-number">3</div>
-    <h2>Instalar los prerrequisitos de software</h2>
+    <h2>Instalar los programas base</h2>
   </div>
-  <div class="box warn">
-    <div class="box-title">Orden importante</div>
-    Instala en el orden indicado. VS Code debe instalarse <em>antes</em> de la extensi&#243;n del MCP.
-  </div>
+  <p>Estos 4 programas deben instalarse manualmente. El instalador autom&#225;tico se encarga de todo lo dem&#225;s.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
@@ -844,7 +838,7 @@
         <h4>Python 3 &#8212; el motor de scripts</h4>
         <p>Ve a <strong>python.org/downloads</strong> y descarga la versi&#243;n m&#225;s reciente de Python 3 para Windows.</p>
         <p>Durante la instalaci&#243;n, <strong>marca obligatoriamente la casilla "Add Python to PATH"</strong> en la primera pantalla. Sin esto el sistema no funcionar&#225;.</p>
-        <p>Para verificar, abre PowerShell:</p>
+        <p>Para verificar despu&#233;s de instalar, abre PowerShell:</p>
         <pre>py --version</pre>
         <p>Debe aparecer <code>Python 3.xx.x</code>. Si aparece un error, reinstala marcando el checkbox de PATH.</p>
         <div class="box info">
@@ -856,32 +850,18 @@
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h4>Power BI Desktop + custom visuals</h4>
-        <p>Descarga Power BI Desktop desde la <strong>Microsoft Store</strong> o desde <strong>powerbi.microsoft.com/desktop</strong>. Despu&#233;s de instalar, importa los custom visuals desde AppSource:</p>
-        <ol>
-          <li>PBI Desktop &#8594; <strong>Inicio</strong> &#8594; <strong>M&#225;s objetos visuales</strong> &#8594; <strong>Desde AppSource</strong></li>
-          <li>Busca <strong>Deneb</strong> &#8594; Agregar</li>
-          <li>Busca <strong>HTML Content</strong> (de Nova Silva / Daniel Marsh-Patrick) &#8594; Agregar</li>
-        </ol>
-        <div class="box warn">
-          <div class="box-title">Paso obligatorio por reporte</div>
-          Deneb y HTML Content deben importarse en <em>cada reporte nuevo</em>. Sin ellos, el motor genera visuals vac&#237;os.
-        </div>
+        <h4>Power BI Desktop</h4>
+        <p>Descarga Power BI Desktop desde la <strong>Microsoft Store</strong> o desde <strong>powerbi.microsoft.com/desktop</strong> e ins&#237;tala con las opciones por defecto.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h4>VS Code &#8212; solo para la extensi&#243;n MCP</h4>
-        <p>Descarga VS Code desde <strong>code.visualstudio.com</strong>. Una vez instalado:</p>
-        <ol>
-          <li>Abre VS Code &#8594; Extensiones (<code>Ctrl+Shift+X</code>)</li>
-          <li>Busca <strong>Power BI Modeling MCP</strong> (proveedor: Microsoft)</li>
-          <li>Instala &#8594; cierra VS Code</li>
-        </ol>
+        <h4>VS Code</h4>
+        <p>Descarga VS Code desde <strong>code.visualstudio.com</strong> e ins&#237;tala con las opciones por defecto.</p>
         <div class="box info">
-          <div class="box-title">&#191;Por qu&#233; VS Code?</div>
-          La extensi&#243;n solo se distribuye v&#237;a el marketplace de VS Code. Una vez instalada, genera un ejecutable que Claude usa para comunicarse con Power BI. VS Code no necesita estar abierto durante el trabajo.
+          <div class="box-title">La extensi&#243;n la instala el script</div>
+          No necesitas instalar la extensi&#243;n Power BI Modeling MCP manualmente. El instalador <code>setup.ps1</code> la instala autom&#225;ticamente en el siguiente paso.
         </div>
       </div>
     </div>
@@ -889,7 +869,7 @@
       <div class="step-num">4</div>
       <div class="step-content">
         <h4>Claude Desktop</h4>
-        <p>Descarga e instala Claude Desktop desde <strong>claude.ai</strong>. Entra con tu cuenta.</p>
+        <p>Descarga e instala Claude Desktop desde <strong>claude.ai</strong>. Entra con tu cuenta y abre la aplicaci&#243;n al menos una vez antes de continuar.</p>
       </div>
     </div>
   </div>
@@ -898,55 +878,42 @@
 <section id="m2-sec4">
   <div class="section-header">
     <div class="section-number">4</div>
-    <h2>Copiar los archivos del motor a tu m&#225;quina</h2>
+    <h2>Ejecutar el instalador autom&#225;tico</h2>
   </div>
-  <p>Los archivos del motor son los scripts Python y PowerShell que Claude usa para construir los dashboards. Necesitas copiarlos a una carpeta fija en tu m&#225;quina.</p>
+  <p>Con los 4 programas instalados, el script <code>setup.ps1</code> hace todo lo dem&#225;s en segundos:</p>
+  <table>
+    <tr><th>Lo que hace autom&#225;ticamente</th><th>Lo que sigue siendo manual</th></tr>
+    <tr><td>Instala la extensi&#243;n Power BI MCP en VS Code</td><td>Reiniciar Claude Desktop (paso 3 abajo)</td></tr>
+    <tr><td>Copia los archivos del motor a <code>C:\Claude\pbi-motor\</code></td><td>Importar Deneb y HTML Content en cada reporte nuevo</td></tr>
+    <tr><td>Configura <code>claude_desktop_config.json</code> con la ruta correcta del MCP</td><td>Importar el Filtro (<code>.pbiviz</code>) en cada reporte nuevo</td></tr>
+    <tr><td>Instala las 5 skills en Claude Desktop</td><td></td></tr>
+    <tr><td>Copia el visual Filtro a <code>C:\Claude\pbi-motor\filtro\</code></td><td></td></tr>
+  </table>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <h4>Crear la carpeta del motor</h4>
-        <p>La ruta debe ser <strong>sin espacios ni caracteres especiales</strong>. Recomendamos:</p>
-        <pre>C:\Claude\pbi-motor\</pre>
-        <p>Para crearla desde PowerShell:</p>
-        <pre>New-Item -ItemType Directory -Force "C:\Claude\pbi-motor"</pre>
+        <h4>Abrir PowerShell en la carpeta EXPORTAR</h4>
+        <p>Navega en el Explorador de archivos hasta la carpeta <code>EXPORTAR\</code>. Haz clic derecho en un espacio vac&#237;o de la carpeta y selecciona <strong>"Abrir en Terminal"</strong> o <strong>"Abrir ventana de PowerShell aqu&#237;"</strong>.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h4>Copiar los archivos del motor</h4>
-        <p>De la carpeta <code>EXPORTAR\motor\</code>, copia todos los archivos a <code>C:\Claude\pbi-motor\</code>:</p>
-        <ul>
-          <li><code>pbir_tool.py</code></li>
-          <li><code>pbir_templates.py</code></li>
-          <li><code>pbir_layout.py</code></li>
-          <li><code>pbi.ps1</code></li>
-          <li><code>SISTEMA.md</code></li>
-          <li><code>filtros_test.json</code> (ejemplo, opcional)</li>
-        </ul>
+        <h4>Ejecutar el instalador</h4>
+        <pre>PowerShell -ExecutionPolicy Bypass -File setup.ps1</pre>
+        <p>El script muestra el progreso en tiempo real. Cuando termina ver&#225;s el resumen con los pasos manuales pendientes.</p>
+        <div class="box warn">
+          <div class="box-title">Si la extensi&#243;n MCP aparece en amarillo</div>
+          Ocurre cuando VS Code acaba de instalarse y a&#250;n no tiene la extensi&#243;n. El script igual copia el motor y las skills. Despu&#233;s de que VS Code instale la extensi&#243;n, vuelve a ejecutar <code>setup.ps1</code> y el paso 3 (configurar MCP) se completar&#225; autom&#225;ticamente.
+        </div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h4>Actualizar la ruta en SISTEMA.md y el SKILL.md principal</h4>
-        <p>Abre <code>C:\Claude\pbi-motor\SISTEMA.md</code> con el Bloc de notas. Usa <code>Ctrl+H</code> para cambiar la ruta del usuario original a la tuya:</p>
-        <pre>C:\Users\&lt;usuario-origen&gt;\...  &#8594;  C:\Claude\pbi-motor</pre>
-        <p>Repite lo mismo en el <code>SKILL.md</code> de <code>powerbi-dashboard-builder</code> antes de copiarlo a Claude.</p>
-        <div class="box info">
-          <div class="box-title">&#191;Por qu&#233; esto?</div>
-          Claude lee <code>SISTEMA.md</code> al inicio de cada sesi&#243;n para saber d&#243;nde est&#225;n los scripts. Si la ruta est&#225; mal, Claude no encontrar&#225; los archivos.
-        </div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <h4>Copiar el visual Filtro</h4>
-        <p>El filtro personalizado viene como archivo <code>.pbiviz</code> compilado. C&#243;pialo a una ubicaci&#243;n accesible:</p>
-        <pre>C:\Claude\pbi-motor\filtro\filtro...1.0.0.0.pbiviz</pre>
-        <p>Se importa en cada reporte nuevo directamente desde Power BI (ver Secci&#243;n 8).</p>
+        <h4>Reiniciar Claude Desktop</h4>
+        <p>Este paso es siempre manual. Cierra Claude Desktop completamente desde la bandeja del sistema (clic derecho en el &#237;cono &#8594; <strong>Salir</strong>) y vuelve a abrirlo para que cargue la nueva configuraci&#243;n MCP y las skills reci&#233;n instaladas.</p>
       </div>
     </div>
   </div>
@@ -955,52 +922,38 @@
 <section id="m2-sec5">
   <div class="section-header">
     <div class="section-number">5</div>
-    <h2>Configurar el MCP de Power BI en Claude</h2>
+    <h2>Verificar que todo funciona</h2>
   </div>
-  <p>El MCP es la l&#237;nea de comunicaci&#243;n entre Claude y Power BI. Permite que Claude cree medidas DAX, lea el modelo y trabaje con el archivo mientras PBI est&#225; abierto.</p>
+  <p>Antes de usar el sistema con un reporte real, verifica que los scripts funcionen correctamente.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <h4>Encontrar el ejecutable del MCP</h4>
-        <p>Abre PowerShell y escribe:</p>
-        <pre>Get-ChildItem "$env:USERPROFILE\.vscode\extensions" | Where-Object { $_.Name -like "*powerbi*" }</pre>
-        <p>Ver&#225;s algo como <code>analysis-services.powerbi-modeling-mcp-0.4.0-win32-x64</code>. Anota ese nombre de carpeta completo.</p>
+        <h4>Verificar Python y el motor</h4>
+        <pre>cd "C:\Claude\pbi-motor"
+py pbir_tool.py --help</pre>
+        <p>Debe aparecer una lista de comandos disponibles. Si aparece un error de m&#243;dulo, verifica que los 3 archivos Python est&#233;n en la misma carpeta.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <h4>Abrir el archivo de configuraci&#243;n de Claude Desktop</h4>
-        <pre>notepad "$env:APPDATA\Claude\claude_desktop_config.json"</pre>
-        <p>Si el archivo no existe, se abrir&#225; en blanco &#8212; est&#225; bien, lo crear&#225;s t&#250;.</p>
+        <h4>Verificar el wrapper PowerShell</h4>
+        <pre>.\pbi.ps1 list-pages</pre>
+        <p>Debe aparecer un mensaje amarillo diciendo que no hay proyecto activo. Eso es correcto &#8212; significa que el script funciona.</p>
+        <div class="box warn">
+          <div class="box-title">Error de pol&#237;tica de ejecuci&#243;n</div>
+          Si ves <em>"la ejecuci&#243;n de scripts est&#225; deshabilitada"</em>, ejecuta una vez:
+          <pre>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</pre>
+          Responde "S" cuando pregunte.
+        </div>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h4>Agregar la configuraci&#243;n</h4>
-        <p>Pega esto (reemplaza <code>TU_USUARIO</code> y el nombre de la carpeta de la extensi&#243;n):</p>
-        <pre>{
-  "mcpServers": {
-    "powerbi-modeling-mcp": {
-      "command": "C:\\Users\\TU_USUARIO\\.vscode\\extensions\\analysis-services.powerbi-modeling-mcp-0.4.0-win32-x64\\server\\powerbi-modeling-mcp.exe",
-      "args": ["--start"],
-      "env": {}
-    }
-  }
-}</pre>
-        <div class="box warn">
-          <div class="box-title">Barras dobles obligatorias</div>
-          Las rutas de Windows en JSON deben usar barras dobles (<code>C:\\Users\\...</code>). Si pegas la ruta con barras simples, usa <code>Ctrl+H</code> en el Bloc de Notas para reemplazar <code>\</code> por <code>\\</code> antes de guardar.
-        </div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <h4>Reiniciar Claude Desktop</h4>
-        <p>Cierra completamente (clic derecho en el &#237;cono del sistema &#8594; <strong>Salir</strong>) y vuelve a abrirlo. Para verificar, en una sesi&#243;n nueva con PBI abierto escribe:</p>
+        <h4>Verificar el MCP (requiere Power BI abierto)</h4>
+        <p>Abre Power BI con cualquier reporte. En Claude Desktop, en una sesi&#243;n nueva escribe:</p>
         <pre>Conecta al modelo de Power BI que tengo abierto</pre>
         <p>Claude deber&#237;a listar las instancias disponibles y conectarse.</p>
       </div>
@@ -1011,104 +964,6 @@
 <section id="m2-sec6">
   <div class="section-header">
     <div class="section-number">6</div>
-    <h2>Instalar las skills en Claude</h2>
-  </div>
-  <p>Las skills son archivos SKILL.md que le ense&#241;an a Claude c&#243;mo comportarse. El paquete incluye 5 skills. Necesitas instalarlas en la carpeta correcta de Claude Desktop.</p>
-  <h3>Opci&#243;n A &#8212; Copiar directamente (recomendado)</h3>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <h4>Encontrar la carpeta de skills</h4>
-        <p>La carpeta tiene un ID &#250;nico por instalaci&#243;n. Para encontrarla:</p>
-        <pre>Get-ChildItem "$env:APPDATA\Claude\local-agent-mode-sessions\skills-plugin" -Recurse -Filter "skills" -Directory | Select-Object -ExpandProperty FullName</pre>
-        <p>Deber&#237;a aparecer una ruta como:</p>
-        <pre>C:\Users\TU_USUARIO\AppData\Roaming\Claude\local-agent-mode-sessions\
-  skills-plugin\XXXXXXXX-...\YYYYYYYY-...\skills</pre>
-        <div class="box warn">
-          <div class="box-title">Si la carpeta no existe</div>
-          Solo aparece despu&#233;s de que Claude Desktop carga el plugin de skills al menos una vez. Abre Claude Desktop, espera que cargue completamente, ci&#233;rralo y vuelve a ejecutar el comando.
-        </div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <h4>Copiar las 5 carpetas de skills</h4>
-        <p>De <code>EXPORTAR\skills\</code>, copia las 5 carpetas completas a la carpeta de skills encontrada:</p>
-        <ul>
-          <li><code>powerbi-dashboard-builder\SKILL.md</code> &#8212; orquestador M2</li>
-          <li><code>powerbi-mcp-flow\SKILL.md</code> &#8212; orquestador M1</li>
-          <li><code>deneb-chart-generator\SKILL.md</code></li>
-          <li><code>html-kpi-cards\SKILL.md</code></li>
-          <li><code>powerbi-dax-auditor\SKILL.md</code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <h4>Reiniciar Claude Desktop</h4>
-        <p>Cierra y reabre Claude. Para verificar que las skills est&#225;n activas, en una sesi&#243;n escribe:</p>
-        <pre>vamos a empezar un dashboard nuevo</pre>
-        <p>Claude deber&#237;a activar el flujo de construcci&#243;n de dashboard y pedir la ruta del archivo <code>.pbip</code>.</p>
-      </div>
-    </div>
-  </div>
-  <h3>Opci&#243;n B &#8212; Subir desde la interfaz de Claude</h3>
-  <p>Abre Claude Desktop &#8594; <strong>Customize</strong> &#8594; en el panel izquierdo haz clic en <strong>+</strong> &#8594; <strong>Crear habilidad</strong> &#8594; <strong>Subir una habilidad</strong>. Arrastra el archivo <code>SKILL.md</code> correspondiente. Repite para cada skill.</p>
-  <div class="box info">
-    <div class="box-title">&#191;Cu&#225;ndo se activan las skills?</div>
-    Las skills se activan <strong>autom&#225;ticamente</strong> cuando Claude detecta el contexto correcto. Mencionar "dashboard", "gr&#225;fica", "tarjeta KPI" o "metodolog&#237;a" basta para que Claude sepa qu&#233; hacer.
-  </div>
-</section>
-
-<section id="m2-sec7">
-  <div class="section-header">
-    <div class="section-number">7</div>
-    <h2>Verificar que todo funciona</h2>
-  </div>
-  <p>Antes de usar el sistema con un reporte real, verifica que los scripts funcionen correctamente.</p>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <h4>Verificar Python</h4>
-        <pre>cd "C:\Claude\pbi-motor"
-py pbir_tool.py --help</pre>
-        <p>Debe aparecer una lista de comandos disponibles. Si aparece un error de m&#243;dulo, verifica que los 3 archivos Python est&#233;n en la misma carpeta.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <h4>Verificar el wrapper PowerShell</h4>
-        <pre>cd "C:\Claude\pbi-motor"
-.\pbi.ps1 list-pages</pre>
-        <p>Debe aparecer un mensaje amarillo diciendo que no hay proyecto activo. Eso es correcto &#8212; significa que el script funciona.</p>
-        <div class="box warn">
-          <div class="box-title">Error de pol&#237;tica de ejecuci&#243;n</div>
-          Si ves <em>"la ejecuci&#243;n de scripts est&#225; deshabilitada"</em>, ejecuta:
-          <pre>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</pre>
-          Responde "S" cuando pregunte.
-        </div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <h4>Verificar el MCP (requiere Power BI abierto)</h4>
-        <p>Abre Power BI con cualquier reporte. En Claude Desktop, en una sesi&#243;n nueva:</p>
-        <pre>Conecta al modelo de Power BI que tengo abierto</pre>
-        <p>Claude deber&#237;a usar el MCP para listar las instancias y conectarse.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="m2-sec8">
-  <div class="section-header">
-    <div class="section-number">8</div>
     <h2>Iniciar el primer proyecto</h2>
   </div>
   <p>Una vez verificado todo, aqu&#237; est&#225; el flujo completo para iniciar un dashboard desde cero.</p>
@@ -1124,6 +979,28 @@ py pbir_tool.py --help</pre>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
+        <h4>Importar Deneb, HTML Content y el Filtro en Power BI</h4>
+        <p><strong>Deneb y HTML Content</strong> (una vez por reporte nuevo):</p>
+        <ol>
+          <li>PBI Desktop &#8594; <strong>Inicio</strong> &#8594; <strong>M&#225;s objetos visuales</strong> &#8594; <strong>Desde AppSource</strong></li>
+          <li>Busca <strong>Deneb</strong> &#8594; Agregar</li>
+          <li>Busca <strong>HTML Content</strong> (de Nova Silva / Daniel Marsh-Patrick) &#8594; Agregar</li>
+        </ol>
+        <p><strong>Filtro</strong> (una vez por reporte nuevo):</p>
+        <ol>
+          <li>PBI Desktop &#8594; <strong>Inicio</strong> &#8594; <strong>M&#225;s objetos visuales</strong> &#8594; <strong>Importar desde archivo</strong></li>
+          <li>Navega a <code>C:\Claude\pbi-motor\filtro\</code> y selecciona el archivo <code>.pbiviz</code></li>
+          <li>Acepta el aviso de seguridad &#8594; debe aparecer <strong>"Importaci&#243;n correcta"</strong></li>
+        </ol>
+        <div class="box warn">
+          <div class="box-title">Paso obligatorio por reporte</div>
+          Deneb, HTML Content y el Filtro deben importarse en <em>cada reporte nuevo</em>. Sin ellos, el motor genera visuals vac&#237;os.
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
         <h4>Registrar el proyecto en el motor</h4>
         <pre>cd "C:\Claude\pbi-motor"
 .\pbi.ps1 pbi-init "C:\ruta\a\MiReporte.pbip"</pre>
@@ -1131,7 +1008,7 @@ py pbir_tool.py --help</pre>
       </div>
     </div>
     <div class="step">
-      <div class="step-num">3</div>
+      <div class="step-num">4</div>
       <div class="step-content">
         <h4>Detectar los GUIDs de los custom visuals</h4>
         <pre>.\pbi.ps1 detect-custom</pre>
@@ -1139,22 +1016,6 @@ py pbir_tool.py --help</pre>
         <div class="box error">
           <div class="box-title">Nunca reutilices GUIDs de otro reporte</div>
           Los GUIDs cambian por proyecto. Si usas los de un reporte anterior, Claude generar&#225; visuals vac&#237;os. Siempre ejecuta <code>detect-custom</code> al iniciar un proyecto nuevo.
-        </div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <h4>Importar el visual Filtro en Power BI (una sola vez por reporte)</h4>
-        <ol>
-          <li>Abre el reporte en <strong>Power BI Desktop</strong></li>
-          <li>Ve a <strong>Inicio &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo</strong></li>
-          <li>Navega al archivo <code>.pbiviz</code> del Filtro</li>
-          <li>Acepta el aviso de seguridad &#8594; debe aparecer <strong>"Importaci&#243;n correcta"</strong></li>
-        </ol>
-        <div class="box info">
-          <div class="box-title">Solo una vez por reporte</div>
-          Una vez importado, el visual queda disponible en ese reporte permanentemente.
         </div>
       </div>
     </div>
@@ -1172,12 +1033,12 @@ py pbir_tool.py --help</pre>
   </div>
 </section>
 
-<section id="m2-sec9">
+<section id="m2-sec7">
   <div class="section-header">
-    <div class="section-number">9</div>
+    <div class="section-number">7</div>
     <h2>Referencia r&#225;pida de comandos</h2>
   </div>
-  <p>Todos los comandos se ejecutan desde la carpeta del motor con <code>.\pbi.ps1 &lt;comando&gt;</code>.</p>
+  <p>Todos los comandos se ejecutan desde <code>C:\Claude\pbi-motor\</code> con <code>.\pbi.ps1 &lt;comando&gt;</code>.</p>
   <h3>Comandos de proyecto</h3>
   <table>
     <tr><th>Comando</th><th>Qu&#233; hace</th></tr>
@@ -1206,9 +1067,9 @@ py pbir_tool.py --help</pre>
   </table>
 </section>
 
-<section id="m2-sec10">
+<section id="m2-sec8">
   <div class="section-header">
-    <div class="section-number">10</div>
+    <div class="section-number">8</div>
     <h2>Soluci&#243;n de problemas frecuentes</h2>
   </div>
   <table>
@@ -1224,9 +1085,19 @@ py pbir_tool.py --help</pre>
       <td><code>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code></td>
     </tr>
     <tr>
+      <td>setup.ps1 no configura el MCP (sale en amarillo)</td>
+      <td>La extensi&#243;n VS Code no estaba instalada a&#250;n</td>
+      <td>Instala la extensi&#243;n en VS Code, ci&#233;rralo, y vuelve a ejecutar <code>setup.ps1</code></td>
+    </tr>
+    <tr>
+      <td>setup.ps1 no instala las skills (sale en amarillo)</td>
+      <td>Claude Desktop nunca se abri&#243; para crear la carpeta de skills</td>
+      <td>Abre Claude Desktop, espera que cargue, ci&#233;rralo, y vuelve a ejecutar <code>setup.ps1</code></td>
+    </tr>
+    <tr>
       <td>El MCP no conecta a Power BI</td>
-      <td>Ruta incorrecta en config o PBI no est&#225; abierto</td>
-      <td>Verificar ruta del ejecutable; asegurarse de que PBI tiene un reporte abierto</td>
+      <td>Claude Desktop no se reinici&#243; despu&#233;s del setup</td>
+      <td>Clic derecho en bandeja &#8594; Salir &#8594; volver a abrir; asegurarse de que PBI tiene un reporte abierto</td>
     </tr>
     <tr>
       <td>Visual Deneb vac&#237;o en PBI</td>
@@ -1236,12 +1107,12 @@ py pbir_tool.py --help</pre>
     <tr>
       <td>Filtro aparece vac&#237;o / "importa el visual"</td>
       <td>.pbiviz no importado en este reporte</td>
-      <td>PBI &#8594; Inicio &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo &#8594; seleccionar el .pbiviz</td>
+      <td>PBI &#8594; Inicio &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo &#8594; seleccionar el .pbiviz en <code>C:\Claude\pbi-motor\filtro\</code></td>
     </tr>
     <tr>
       <td>Claude no activa el modo dashboard</td>
-      <td>Skills no instaladas o carpeta incorrecta</td>
-      <td>Verificar que los SKILL.md est&#225;n en la carpeta correcta y reiniciar Claude Desktop</td>
+      <td>Skills no cargadas o Claude no se reinici&#243;</td>
+      <td>Verificar que las skills est&#225;n en la carpeta correcta y reiniciar Claude Desktop</td>
     </tr>
     <tr>
       <td>"P&#225;gina 'X' no encontrada"</td>
@@ -1261,7 +1132,7 @@ py pbir_tool.py --help</pre>
     <tr>
       <td>Error "ModuleNotFoundError: pbir_layout"</td>
       <td>Los 3 archivos Python no est&#225;n juntos</td>
-      <td>Verificar que pbir_tool.py, pbir_templates.py y pbir_layout.py est&#225;n en la misma carpeta</td>
+      <td>Verificar que pbir_tool.py, pbir_templates.py y pbir_layout.py est&#225;n en <code>C:\Claude\pbi-motor\</code></td>
     </tr>
   </table>
   <div class="box tip" style="margin-top:30px;">
