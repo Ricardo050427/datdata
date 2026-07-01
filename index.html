@@ -410,7 +410,8 @@
     <li><a href="#m1-sec5">Skills Instalables para Claude</a></li>
     <li><a href="#m1-sec6">Tecnolog&#237;as de apoyo</a></li>
     <li><a href="#m1-sec7">Las 7 Etapas del Flujo de Trabajo</a></li>
-    <li><a href="#m1-sec8">Checklist de Sesi&#243;n</a></li>
+    <li><a href="#m1-sec8">Prompt de Inicio</a></li>
+    <li><a href="#m1-sec9">Checklist de Sesi&#243;n</a></li>
   </ol>
 </div>
 
@@ -554,16 +555,20 @@
       <th>Descripci&#243;n</th>
     </tr>
     <tr>
-      <td><strong>powerbi-dashboard-builder</strong></td>
-      <td>Skill principal. Orquesta las etapas 1-5. Conecta al modelo abierto via MCP autom&#225;ticamente.</td>
+      <td><strong>powerbi-mcp-flow</strong></td>
+      <td>Skill principal de M1. Orquesta las 7 etapas del flujo MCP + Chat. Conecta al modelo abierto via MCP, crea medidas DAX autom&#225;ticamente y entrega instrucciones paso a paso para colocar cada visual.</td>
+    </tr>
+    <tr>
+      <td><strong>powerbi-filter</strong></td>
+      <td>Genera instrucciones y DAX para crear la barra de filtros del dashboard. Incluye ordenamiento correcto de meses (enero&#8594;diciembre) y a&#241;os descendentes. Soporta el visual Filtro General Universal o slicers nativos de PBI.</td>
     </tr>
     <tr>
       <td><strong>deneb-chart-generator</strong></td>
-      <td>Genera specs de Vega-Lite para Deneb a partir de una descripci&#243;n o imagen de referencia.</td>
+      <td>Genera specs de Vega-Lite para Deneb a partir de una descripci&#243;n o imagen de referencia. Incluye interactividad completa: hover, cross-filter saliente y entrante.</td>
     </tr>
     <tr>
       <td><strong>html-kpi-cards</strong></td>
-      <td>Construye medidas DAX de tipo HTML Content para tarjetas KPI y badges de estado.</td>
+      <td>Construye medidas DAX de tipo HTML Content para tarjetas KPI verticales y horizontales, con delta badge y texto de insight din&#225;mico.</td>
     </tr>
     <tr>
       <td><strong>powerbi-dax-auditor</strong></td>
@@ -571,7 +576,7 @@
     </tr>
     <tr>
       <td><strong>skill-creator</strong></td>
-      <td>Es una herramienta que redacta y formatea autom&#225;ticamente nuevas skills para Claude bas&#225;ndose en la descripci&#243;n de la tarea que deseas automatizar.</td>
+      <td>Redacta y formatea autom&#225;ticamente nuevas skills para Claude bas&#225;ndose en la descripci&#243;n de la tarea que deseas automatizar.</td>
     </tr>
   </table>
   <h3>C&#243;mo instalar las skills:</h3>
@@ -608,7 +613,7 @@
       <div class="step-num">5</div>
       <div class="step-content">
         <h4>Cargar el archivo</h4>
-        <p>Se abrir&#225; una ventana. Aqu&#237; deber&#225;s <strong>arrastrar y soltar</strong> o hacer clic para cargar los archivos correspondientes a las <em>skills</em> (<code>.md</code>, <code>.zip</code> o <code>.skill</code>). Repite el proceso para cada una de las 5 skills.</p>
+        <p>Se abrir&#225; una ventana. Aqu&#237; deber&#225;s <strong>arrastrar y soltar</strong> o hacer clic para cargar los archivos correspondientes a las <em>skills</em> (<code>.md</code>, <code>.zip</code> o <code>.skill</code>). Repite el proceso para cada una de las 6 skills.</p>
         <img src="imgs/img9.png" alt="Ventana para subir una habilidad en Claude Desktop" style="max-width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid var(--border);">
         Link para descargar las skills: https://drive.google.com/drive/folders/1BXyo1KvI6fctRvzEKfRlPMbXcenKYjj3?usp=drive_link
       </div>
@@ -641,6 +646,24 @@
       <div class="step-content">
         <h4>HTML Content</h4>
         <p>Tarjetas KPI, tablas con formato avanzado e iconograf&#237;a din&#225;mica construidas con HTML/CSS puro, reactivas al contexto de filtro de Power BI.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Filtro General Universal</h4>
+        <p>Visual personalizado TypeScript que genera una barra de filtros interactiva en la parte superior del dashboard. Soporta b&#250;squeda por texto, multi-selecci&#243;n, meses ordenados en espa&#241;ol y color de acento configurable para cualquier paleta.</p>
+        <p>Para instalarlo en Power BI Desktop:</p>
+        <ol style="margin: 8px 0 0 18px; line-height: 2;">
+          <li>Descarga el archivo <code>FiltroGeneralUniversal.pbiviz</code> desde el repositorio: <a href="filtro/FiltroGeneralUniversal.pbiviz" download style="color:var(--accent);font-weight:600;">Descargar Filtro</a></li>
+          <li>En PBI Desktop &#8594; <strong>Inicio &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo</strong></li>
+          <li>Selecciona el archivo descargado y acepta la advertencia de certificaci&#243;n</li>
+          <li>El visual aparece en tu panel de Visualizaciones listo para usar</li>
+        </ol>
+        <div class="box warn" style="margin-top:12px;">
+          <div class="box-title">Uso del filtro</div>
+          Cuando le pidas a Claude que agregue un filtro a tu dashboard, la skill <strong>powerbi-filter</strong> le dar&#225; instrucciones espec&#237;ficas sobre qu&#233; columnas poner (A&#241;o, Mes, dimensiones), el DAX necesario para ordenar los meses y c&#243;mo configurar el visual en tu lienzo.
+        </div>
       </div>
     </div>
   </div>
@@ -708,6 +731,35 @@
 <section id="m1-sec8">
   <div class="section-header">
     <div class="section-number">8</div>
+    <h2>Prompt de Inicio</h2>
+  </div>
+  <p>Con la configuraci&#243;n lista, usa este prompt al comenzar cada nuevo dashboard. Copia el bloque, personaliza los campos entre corchetes y p&#233;galo directamente en Claude Desktop. Esto activa autom&#225;ticamente el flujo de 7 etapas.</p>
+  <div class="box purple" style="margin-top:16px;">
+    <div class="box-title">Prompt de inicio &#8212; copiar y personalizar</div>
+    <pre style="background:rgba(255,255,255,0.15);border-radius:8px;padding:14px 16px;margin-top:10px;font-size:13px;line-height:1.75;white-space:pre-wrap;color:#2d0060;font-family:'Segoe UI',monospace;">Quiero construir un dashboard de Power BI con la Metodolog&#237;a 1 (MCP + Chat).
+
+Mi archivo Power BI est&#225; abierto: [nombre del archivo.pbix]
+Tablas disponibles: [describe las tablas y columnas principales]
+Objetivo del dashboard: [qu&#233; preguntas debe responder / qui&#233;n lo usar&#225;]
+Paleta de colores: [morada / azul / verde / naranja / hex corporativo]
+
+Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
+  </div>
+  <div class="box warn" style="margin-top:14px;">
+    <div class="box-title">&#191;Qu&#233; hace Claude con este prompt?</div>
+    <ol style="margin:6px 0 0 18px;line-height:2;">
+      <li>Activa la skill <strong>powerbi-mcp-flow</strong> y se conecta al modelo abierto via MCP</li>
+      <li>Lee las tablas y columnas para diagnosticar la calidad de los datos (Etapa 1)</li>
+      <li>Te pregunta o confirma el objetivo del dashboard (Etapa 2)</li>
+      <li>Crea las medidas DAX necesarias directamente en tu modelo (Etapa 4)</li>
+      <li>Genera el c&#243;digo de cada visual y te da instrucciones exactas de d&#243;nde colocarlo (Etapa 5&#8211;6)</li>
+    </ol>
+  </div>
+</section>
+
+<section id="m1-sec9">
+  <div class="section-header">
+    <div class="section-number">9</div>
     <h2>Checklist de Sesi&#243;n</h2>
   </div>
   <p>Usar este checklist al iniciar cada nuevo proyecto de dashboard:</p>
