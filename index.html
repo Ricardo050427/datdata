@@ -360,7 +360,39 @@
     .cover h1 { font-size: 26px; }
     .toc, .content { padding-left: 16px; padding-right: 16px; }
     .site-footer { padding: 16px; flex-direction: column; gap: 8px; }
+    .prompt-block pre { max-height: 320px; }
+    .copy-btn { position: static; display: block; margin: 0 0 8px auto; }
   }
+
+  /* Bloque de prompt copiable */
+  .prompt-block { position: relative; margin: 14px 0; }
+  .prompt-block pre {
+    margin: 0;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-top: 46px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.55;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 2;
+    padding: 6px 14px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--accent);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .copy-btn:hover { background: var(--accent); color: #fff; }
+  .copy-btn.done { background: var(--green-bg); border-color: var(--green); color: var(--green); }
 </style>
 </head>
 <body>
@@ -786,8 +818,8 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
 <div class="cover" style="background: linear-gradient(135deg, #3d006b 0%, #6A0DAD 55%, #9B59B6 100%);">
   <div class="method-tag">Metodolog&#237;a 2</div>
   <h1>Sistema de Dashboards<br>Power BI con Claude</h1>
-  <p>Claude construye dashboards completos de Power BI a partir de una descripci&#243;n en lenguaje natural: las skills de Microsoft Fabric arman el reporte y tus custom visuals &#8212; Deneb, HTML Content y el Filtro &#8212; dibujan gr&#225;ficas, tarjetas y filtros.</p>
-  <p>El instalador <strong>setup.ps1</strong> lo configura y, a partir de ah&#237;, todo se construye desde un prompt.</p>
+  <p>Claude construye dashboards completos de Power BI a partir de una descripci&#243;n en lenguaje natural: las skills de Microsoft Fabric arman el reporte y los custom visuals &#8212; Deneb, HTML Content y el Filtro &#8212; dibujan gr&#225;ficas, tarjetas y filtros.</p>
+  <p>Se instala una vez. Despu&#233;s, cada dashboard nuevo arranca con <strong>una sola frase</strong>: <em>"Crea un dashboard del reporte que tengo abierto"</em>.</p>
   <br>
   <span class="badge">Claude Code</span>
   <span class="badge">Node.js</span>
@@ -800,13 +832,14 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
   <h2>Contenido</h2>
   <ol>
     <li><a href="#m2-sec1">&#191;Qu&#233; es este sistema?</a></li>
-    <li><a href="#m2-sec2">Archivos incluidos en este paquete</a></li>
-    <li><a href="#m2-sec3">Instalaci&#243;n</a></li>
+    <li><a href="#m2-sec2">Qu&#233; se instala</a></li>
+    <li><a href="#m2-sec3">Instalaci&#243;n</a> &#8212; <em>con IA o a mano</em></li>
     <li><a href="#m2-sec4">Importar los custom visuals en Power BI</a></li>
     <li><a href="#m2-sec5">Verificar que todo funciona</a></li>
     <li><a href="#m2-sec6">Construir tu primer dashboard</a></li>
-    <li><a href="#m2-sec7">Referencia r&#225;pida de comandos</a></li>
-    <li><a href="#m2-sec8">Soluci&#243;n de problemas frecuentes</a></li>
+    <li><a href="#m2-sec7">Dirigir el resultado: color, layout, p&#225;ginas y filtros</a></li>
+    <li><a href="#m2-sec8">Referencia r&#225;pida de comandos</a></li>
+    <li><a href="#m2-sec9">Soluci&#243;n de problemas frecuentes</a></li>
   </ol>
 </div>
 
@@ -840,29 +873,31 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
 <section id="m2-sec2">
   <div class="section-header">
     <div class="section-number">2</div>
-    <h2>Archivos incluidos en este paquete</h2>
+    <h2>Qu&#233; se instala</h2>
   </div>
-  <p>La carpeta <code>EXPORTAR</code> que acompa&#241;a este tutorial tiene esta estructura:</p>
+  <p>Todo el sistema son <strong>5 skills</strong> que se copian a <code>%USERPROFILE%\.claude\skills</code>. Al vivir ah&#237;, quedan disponibles en <strong>cualquier sesi&#243;n y cualquier carpeta</strong>: no hay que copiar nada por proyecto.</p>
   <div class="file-tree">
-    <span class="folder">EXPORTAR/</span><br>
-    &nbsp;&nbsp;<span class="file">setup.ps1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; instalador (ejecutar esto primero)</span><br>
-    &nbsp;&nbsp;<span class="file">TUTORIAL_INSTALACION.html</span>&nbsp;&nbsp;<span class="note">&#8592; esta gu&#237;a</span><br>
-    &nbsp;&nbsp;<span class="folder">motor/</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">hybrid.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; generador de los visuales</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SISTEMA.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; referencia de patrones que Claude lee</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">filtros_test.json</span>&nbsp;&nbsp;<span class="note">&#8592; ejemplo</span><br>
-    &nbsp;&nbsp;<span class="folder">navara/</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">FiltroGeneralUniversal.pbiviz</span>&nbsp;&nbsp;<span class="note">&#8592; el visual Filtro (se importa por reporte)</span><br>
-    &nbsp;&nbsp;<span class="folder">skills/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; skills de patrones de los custom visuals</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">deneb-chart-generator/</span>&nbsp;&nbsp;<span class="note">&#8592; gr&#225;ficas Vega-Lite</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">html-kpi-cards/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; tarjetas HTML</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">powerbi-filter/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; el visual Filtro</span><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">powerbi-dax-auditor/</span>&nbsp;&nbsp;&nbsp;<span class="note">&#8592; audita el modelo de datos</span>
+    <span class="folder">%USERPROFILE%\.claude\skills\</span><br>
+    &nbsp;&nbsp;<span class="folder">powerbi-dashboard/</span>&nbsp;&nbsp;<span class="note">&#8592; el orquestador: dirige todo el flujo</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SKILL.md</span>&nbsp;&nbsp;<span class="note">&#8592; el procedimiento</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">reference/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SISTEMA.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; patrones de Deneb, HTML y DAX</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">GOTCHAS.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; los errores ya resueltos, para no repetirlos</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">PERSONALIZACION.md</span>&nbsp;&nbsp;<span class="note">&#8592; c&#243;mo obedecer tus instrucciones</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">assets/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">hybrid.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; el generador de los visuales</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">FiltroGeneralUniversal.pbiviz</span>&nbsp;&nbsp;<span class="note">&#8592; el visual Filtro</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">filtro-template/</span>&nbsp;&nbsp;<span class="note">&#8592; base para compilar un filtro a medida</span><br>
+    &nbsp;&nbsp;<span class="folder">deneb-chart-generator/</span>&nbsp;&nbsp;<span class="note">&#8592; plantillas de gr&#225;ficas Vega-Lite</span><br>
+    &nbsp;&nbsp;<span class="folder">html-kpi-cards/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; tarjetas KPI en HTML</span><br>
+    &nbsp;&nbsp;<span class="folder">powerbi-filter/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; la barra de filtros</span><br>
+    &nbsp;&nbsp;<span class="folder">powerbi-dax-auditor/</span>&nbsp;&nbsp;&nbsp;<span class="note">&#8592; audita el modelo antes de construir</span>
   </div>
   <p style="margin-top:16px;"><a href="EXPORTAR.zip" download style="display:inline-block;padding:9px 22px;background:var(--accent);color:#fff;border-radius:8px;font-weight:700;font-size:13px;text-decoration:none;">Descargar paquete (EXPORTAR.zip)</a></p>
+  <p>El ZIP trae esas 5 skills, el instalador <code>setup.ps1</code> y <code>INSTALAR-CON-IA.md</code> con el prompt de la Secci&#243;n 3.</p>
   <div class="box info">
     <div class="box-title">Las skills de Fabric se instalan aparte</div>
-    El pipeline (planificaci&#243;n, dise&#241;o, posicionamiento, navegaci&#243;n, validaci&#243;n) lo aportan las <strong>skills de Microsoft Fabric</strong>, que se instalan como <em>plugin</em> desde su marketplace p&#250;blico (Secci&#243;n 3). Ese mismo plugin trae el <strong>MCP de modelado</strong>. Las skills de la carpeta <code>skills/</code> son las de los patrones de Deneb, las tarjetas HTML y el Filtro.
+    El pipeline oficial (planificaci&#243;n, dise&#241;o, posicionamiento, validaci&#243;n) lo aportan las <strong>skills de Microsoft Fabric</strong>, que se instalan como <em>plugin</em> desde su marketplace p&#250;blico (Secci&#243;n 3). Ese mismo plugin trae el <strong>MCP de modelado</strong>, que es lo que crea las tablas, relaciones y medidas DAX.
   </div>
 </section>
 
@@ -871,15 +906,88 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
     <div class="section-number">3</div>
     <h2>Instalaci&#243;n</h2>
   </div>
-  <p>El script <code>setup.ps1</code> hace casi todo: verifica/instala Node.js, instala las 2 CLIs de Fabric, copia el motor y el visual Filtro, y registra el marketplace de skills de Fabric.</p>
+  <p>Hay dos caminos. El resultado es el mismo &#8212; elige seg&#250;n prefieras copiar un prompt o correr un script.</p>
+
+  <h3>Opci&#243;n A &#8212; Que lo instale la IA <span style="font-weight:400;color:var(--accent-mid);font-size:14px;">(lo m&#225;s r&#225;pido)</span></h3>
+  <p>Copia este prompt y p&#233;galo en <strong>Claude Code</strong>, o en cualquier agente con acceso a terminal y archivos en tu Windows. Hace todo lo automatizable y al final te dice qu&#233; te queda a ti.</p>
+  <div class="prompt-block">
+    <button class="copy-btn" onclick="copyPrompt(this)">Copiar prompt</button>
+    <pre id="ai-install-prompt">Inst&#225;lame el sistema de dashboards de Power BI "Metodolog&#237;a 2" (Datdata) en este Windows.
+Trabaja de forma aut&#243;noma: no me pidas confirmaci&#243;n paso a paso, ejecuta y al final dame un
+reporte de qu&#233; qued&#243; instalado y qu&#233; falta.
+
+CONTEXTO
+Es un sistema para que t&#250; (la IA) construyas dashboards completos de Power BI: el modelo y las
+medidas DAX se crean por un MCP, y los visuales (gr&#225;ficas Deneb, tarjetas HTML, barra de filtros)
+los escribe un generador Node llamado hybrid.js. Todo el sistema vive en %USERPROFILE%\.claude\skills
+para que est&#233; disponible en cualquier sesi&#243;n y cualquier carpeta.
+
+PASOS
+
+1. Node.js LTS
+   Comprueba con `node --version`. Si no est&#225;, inst&#225;lalo:
+     winget install --id OpenJS.NodeJS.LTS -e --accept-source-agreements --accept-package-agreements
+   Despu&#233;s recarga el PATH del proceso antes de seguir.
+
+2. Las 2 CLIs de Fabric
+     npm i -g @microsoft/powerbi-report-authoring-cli @microsoft/powerbi-desktop-bridge-cli
+   Verifica que `powerbi-report-author --help` y `powerbi-desktop status` respondan.
+   Si dicen "no se reconoce", el PATH no se recarg&#243;: av&#237;same de que hay que reabrir la terminal.
+
+3. Las skills
+   Descarga y descomprime el paquete:
+     https://ricardo050427.github.io/datdata/EXPORTAR.zip
+   Copia TODAS las carpetas de EXPORTAR\skills\ a %USERPROFILE%\.claude\skills\
+   Deben quedar 5: powerbi-dashboard, deneb-chart-generator, html-kpi-cards,
+   powerbi-filter, powerbi-dax-auditor.
+   Si alguna ya exist&#237;a, resp&#225;ldala (ren&#243;mbrala con sufijo .bak_&lt;fecha&gt;) antes de sobrescribir.
+   Verifica que exista %USERPROFILE%\.claude\skills\powerbi-dashboard\assets\hybrid.js
+
+4. El marketplace de skills de Fabric
+   Edita %USERPROFILE%\.claude\settings.json (resp&#225;ldalo antes) y a&#241;ade:
+     "extraKnownMarketplaces": {
+       "fabric-collection": {
+         "source": { "source": "git", "url": "https://github.com/microsoft/skills-for-fabric.git" }
+       }
+     }
+   Si el JSON existente no es v&#225;lido, no lo toques y d&#237;melo.
+
+5. Comprobaci&#243;n final
+   Confirma que existen y funcionan:
+     - node --version
+     - powerbi-report-author --help
+     - powerbi-desktop status
+     - las 5 carpetas de skills, con sus SKILL.md
+     - hybrid.js parsea:  node --check &lt;ruta&gt;\powerbi-dashboard\assets\hybrid.js
+
+LO QUE NO PUEDES HACER T&#218; &#8212; d&#237;melo al final, con estas palabras exactas:
+   a) Instalar el plugin de Fabric. Yo tengo que escribir en Claude Code:
+        /plugin marketplace add microsoft/skills-for-fabric
+        /plugin install powerbi-authoring@fabric-collection
+      y reiniciar Claude Code. Ese plugin trae el MCP de modelado.
+   b) Instalar Power BI Desktop y activar el formato de proyecto:
+      Archivo &gt; Opciones &gt; Caracter&#237;sticas de vista previa &gt; Power BI Project (.pbip)
+   c) Importar los 3 custom visuals en CADA reporte nuevo: Deneb y HTML Content desde AppSource,
+      y el Filtro desde archivo (est&#225; en
+      %USERPROFILE%\.claude\skills\powerbi-dashboard\assets\FiltroGeneralUniversal.pbiviz).
+      Despu&#233;s de importarlos hay que GUARDAR con Ctrl+S antes de pedirte un dashboard.
+
+No instales Python: este sistema no lo usa.</pre>
+  </div>
+  <div class="box info">
+    <div class="box-title">Qu&#233; no puede hacer la IA por ti</div>
+    Instalar el plugin de Fabric (los comandos <code>/plugin</code> los tienes que escribir t&#250; en Claude Code), instalar Power BI Desktop, e importar los custom visuals en cada reporte. El prompt termina record&#225;ndotelo.
+  </div>
+
+  <h3>Opci&#243;n B &#8212; Instalador de PowerShell</h3>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
         <h4>Ejecutar el instalador</h4>
-        <p>Abre PowerShell en la carpeta <code>EXPORTAR</code> y ejecuta:</p>
+        <p>Descarga y descomprime <code>EXPORTAR.zip</code>, abre PowerShell en esa carpeta y ejecuta:</p>
         <pre>PowerShell -ExecutionPolicy Bypass -File setup.ps1</pre>
-        <p>El script imprime cada paso con OK / ! / X. Los "!" son avisos (por ejemplo, "reinicia la terminal para ver la CLI reci&#233;n instalada"), no errores.</p>
+        <p>Verifica/instala Node.js, instala las 2 CLIs de Fabric, copia las 5 skills a <code>.claude\skills</code> y registra el marketplace. Imprime cada paso con OK / ! / X: los "!" son avisos (por ejemplo "reinicia la terminal"), no errores. Si ya ten&#237;as una versi&#243;n instalada, la respalda antes de sobrescribir.</p>
       </div>
     </div>
     <div class="step">
@@ -902,7 +1010,7 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
   </div>
   <div class="box tip">
     <div class="box-title">Y ya</div>
-    Con eso queda instalado. Lo &#250;nico que se repite <strong>por cada reporte nuevo</strong> es importar los tres custom visuals (Secci&#243;n 4).
+    Con eso queda instalado para siempre. Lo &#250;nico que se repite <strong>por cada reporte nuevo</strong> es importar los tres custom visuals (Secci&#243;n 4).
   </div>
 </section>
 
@@ -924,16 +1032,20 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
       <div class="step-num">2</div>
       <div class="step-content">
         <h4>Filtro &#8212; desde archivo</h4>
-        <p><strong>Inicio &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo</strong> &#8594; selecciona <code>FiltroGeneralUniversal.pbiviz</code>. Acepta el aviso de seguridad &#8594; "Importaci&#243;n correcta".</p>
+        <p><strong>Inicio &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo</strong> &#8594; selecciona <code>FiltroGeneralUniversal.pbiviz</code> (est&#225; en <code>.claude\skills\powerbi-dashboard\assets\</code>). Acepta el aviso de seguridad &#8594; "Importaci&#243;n correcta".</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <h4>Guardar</h4>
-        <p><strong>Ctrl+S</strong> para que los visuales queden registrados en el reporte. Una vez importados, permanecen ah&#237;.</p>
+        <h4>Guardar con Ctrl+S &#8212; antes de pedirle nada a Claude</h4>
+        <p>Los visuales reci&#233;n importados viven solo en memoria hasta que guardas. Una vez guardados, permanecen en el reporte para siempre.</p>
       </div>
     </div>
+  </div>
+  <div class="box warn">
+    <div class="box-title">Guarda antes de pedir el dashboard. No es opcional.</div>
+    Si le pides el dashboard a Claude con los visuales importados <strong>pero sin guardar</strong>, la primera recarga del reporte descarta ese estado y <strong>se lleva los tres visuales</strong>. Recuperarlo es manual y tedioso. En un proyecto real esto cost&#243; hora y media. El orden correcto es siempre: <strong>importar &#8594; Ctrl+S &#8594; pedir el dashboard</strong>.
   </div>
 </section>
 
@@ -970,62 +1082,124 @@ powerbi-desktop status</pre>
     <div class="section-number">6</div>
     <h2>Construir tu primer dashboard</h2>
   </div>
-  <p>Con el sistema instalado y los custom visuals importados, construir un dashboard es b&#225;sicamente <strong>un prompt</strong>. Le describes a Claude qu&#233; datos tienes y qu&#233; quieres ver, y &#233;l se encarga del resto.</p>
-  <div class="box purple">
-    <div class="box-title">Prompt de inicio (copiar y adaptar)</div>
-    <pre>Vamos a construir un dashboard de Power BI
-(skills de Fabric + Deneb / HTML Content / Filtro).
+  <p>Tu trabajo es <strong>crear el <code>.pbip</code> con los datos ya cargados</strong> e importar los custom visuals. A partir de ah&#237;, el dashboard entero sale de una frase.</p>
 
-Archivo: C:\ruta\a\MiReporte.pbip
-Datos: [tablas y campos clave, ej. "viajes con Fecha, Estaci&#243;n, Tipo de usuario, Duraci&#243;n"]
-Objetivo: [qu&#233; debe responder, ej. "viajes por mes, top estaciones y % miembros vs casuales"]
-P&#225;ginas: [ej. Resumen, Patrones, Estaciones]
-Paleta: [color de acento en hex o nombre]</pre>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Prepara el archivo</h4>
+        <p>En Power BI Desktop, crea el proyecto <code>.pbip</code> y carga tus datos (Obtener datos &#8594; Actualizar). Importa Deneb, HTML Content y el Filtro (Secci&#243;n 4) y guarda con <strong>Ctrl+S</strong>. D&#233;jalo abierto.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Ped&#237;rselo a Claude</h4>
+        <p>En Claude Code, en cualquier carpeta:</p>
+        <div class="prompt-block">
+          <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+          <pre style="padding-top:46px;font-size:14px;">Crea un dashboard del reporte que tengo abierto</pre>
+        </div>
+        <p>Eso es todo. No hace falta indicar la ruta, ni las tablas, ni las m&#233;tricas: Claude encuentra la instancia abierta, audita el modelo y decide la estructura seg&#250;n lo que haya en los datos.</p>
+      </div>
+    </div>
   </div>
-  <p>A partir de ah&#237; <strong>no tienes que hacer nada m&#225;s</strong>: Claude ejecuta todo el flujo por su cuenta e itera hasta que quede bien. Por dentro:</p>
-  <ul>
-    <li>Conecta el modelo y crea las medidas DAX (y las medidas HTML de las tarjetas).</li>
-    <li>Dise&#241;a el layout y las p&#225;ginas con las skills de Fabric.</li>
-    <li>Genera los visuales, valida el reporte y recarga Power BI.</li>
-    <li>Te muestra capturas del resultado y corrige lo que haga falta.</li>
-  </ul>
-  <p>Cuando lo veas, pides ajustes en lenguaje natural ("haz la gr&#225;fica de barras horizontal", "cambia el acento a azul") y Claude los aplica.</p>
+
+  <h3>Qu&#233; hace por dentro</h3>
+  <ol>
+    <li><strong>Se sit&#250;a:</strong> localiza la instancia abierta, su ruta y si hay cambios sin guardar.</li>
+    <li><strong>Audita el modelo:</strong> mide cardinalidades reales, revisa relaciones inactivas, crea la tabla de calendario y ordena los meses correctamente.</li>
+    <li><strong>Crea las medidas DAX</strong> por MCP, en un solo lote, incluidas las medidas HTML de las tarjetas.</li>
+    <li><strong>Escribe los visuales</strong> con el generador, valida el reporte, recarga Power BI y toma capturas.</li>
+    <li><strong>Revisa su propia captura</strong> y corrige lo que est&#233; mal antes de ense&#241;&#225;rtela.</li>
+    <li>Termina con las capturas y <strong>los hallazgos de negocio</strong> que encontr&#243; en tus datos.</li>
+  </ol>
+  <p>Por defecto arma <strong>3 p&#225;ginas</strong> &#8212; resumen ejecutivo, an&#225;lisis del objeto de negocio y an&#225;lisis operativo &#8212; con navegaci&#243;n en sidebar, barra de filtros arriba y una sola paleta de acento. Si quieres otra cosa, solo d&#237;selo (Secci&#243;n 7).</p>
+
   <div class="box warn">
     <div class="box-title">Con muchos datos, carga los datos t&#250; (no por el MCP)</div>
-    Si el dataset es grande, haz el <strong>Actualizar</strong> de los datos <strong>manualmente en Power BI Desktop</strong>, no le pidas a Claude que refresque por el MCP: cargar vol&#250;menes grandes por el MCP consume mucha RAM y suele hacer <em>timeout</em>. Claude arma el modelo, las medidas y los visuales; t&#250; aprietas <strong>Actualizar</strong> para traer los datos pesados y guardas con Ctrl+S.
+    Si el dataset es grande, haz el <strong>Actualizar</strong> <strong>manualmente en Power BI Desktop</strong>, no le pidas a Claude que refresque por el MCP: cargar vol&#250;menes grandes por ah&#237; consume mucha RAM y suele hacer <em>timeout</em>. Claude arma el modelo, las medidas y los visuales; t&#250; aprietas <strong>Actualizar</strong> para traer los datos pesados.
   </div>
 </section>
 
 <section id="m2-sec7">
   <div class="section-header">
     <div class="section-number">7</div>
+    <h2>Dirigir el resultado: color, layout, p&#225;ginas y filtros</h2>
+  </div>
+  <p>Lo que t&#250; especifiques manda sobre cualquier default. Puedes decirlo en la misma frase inicial o despu&#233;s, viendo el resultado &#8212; en lenguaje natural, sin sintaxis especial.</p>
+
+  <h3>Color</h3>
+  <p>Un solo color de acento gobierna todo el dashboard: gr&#225;ficas, tarjetas, sidebar, mapa de calor y el acento del Filtro. Cambiarlo es una instrucci&#243;n:</p>
+  <pre>lo quiero de color verde</pre>
+  <p>Funciona con nombres (verde, azul, morado, teal, naranja, vino) o con un hex de tu marca. La paleta secundaria &#8212; la de las donas y las series m&#250;ltiples &#8212; se deriva sola en tonos sobrios que contrastan con el acento, sin que tengas que elegirlos.</p>
+  <p>Tambi&#233;n hay tema oscuro: <code>"hazlo en tema oscuro"</code>.</p>
+
+  <h3>Layout y n&#250;mero de p&#225;ginas</h3>
+  <pre>quiero el men&#250; de p&#225;ginas arriba y que sean 5, adem&#225;s de que el filtro est&#233; a la izquierda</pre>
+  <p>Las combinaciones disponibles:</p>
+  <table>
+    <tr><th>Navegaci&#243;n</th><th>Filtro</th><th>Resultado</th></tr>
+    <tr><td>Sidebar izquierdo</td><td>Arriba</td><td>El default. Sidebar oscuro con la marca + barra de pills ancha.</td></tr>
+    <tr><td>Sidebar izquierdo</td><td>Izquierda</td><td>Riel de filtro pegado al sidebar; deja el ancho m&#225;ximo a las gr&#225;ficas.</td></tr>
+    <tr><td>Barra superior</td><td>Arriba</td><td>Estilo web/SaaS: marca y navegaci&#243;n arriba, filtro debajo.</td></tr>
+    <tr><td>Barra superior</td><td>Izquierda</td><td>El que m&#225;s &#225;rea de contenido deja.</td></tr>
+  </table>
+  <p>La cuadr&#237;cula se recalcula sola en las cuatro: no hay solapes ni huecos que corregir a mano. Tambi&#233;n puedes pedir que no haya barra de filtros.</p>
+
+  <h3>Filtros a medida</h3>
+  <p>El visual Filtro maneja varios campos a la vez: los primeros cinco salen como pills desplegables con b&#250;squeda y multi-selecci&#243;n, y el resto van a un panel "M&#225;s Filtros". Puedes dirigir qu&#233; campos aparecen y en qu&#233; orden:</p>
+  <pre>en el filtro pon a&#241;o, mes, sucursal y categor&#237;a, en ese orden</pre>
+  <p>Si necesitas un comportamiento que el visual no tiene &#8212; un selector de rango de fechas, un slider num&#233;rico, dependencia entre campos &#8212; Claude puede <strong>compilar un visual de filtro a medida</strong> a partir de la plantilla incluida:</p>
+  <pre>hazme un filtro personalizado para este dashboard que adem&#225;s tenga un rango de fechas</pre>
+  <p>Compila el <code>.pbiviz</code>, te pide que lo importes una vez, y el resto del flujo sigue igual.</p>
+
+  <div class="box tip">
+    <div class="box-title">Cambios sobre un dashboard ya hecho</div>
+    Cambiar color, mover el filtro, reemplazar una gr&#225;fica o ajustar un KPI se aplica en el momento. <strong>Agregar o quitar p&#225;ginas</strong> es lo &#250;nico que obliga a cerrar y reabrir Power BI &#8212; Claude lo hace solo, pero tarda un poco m&#225;s.
+  </div>
+</section>
+
+<section id="m2-sec8">
+  <div class="section-header">
+    <div class="section-number">8</div>
     <h2>Referencia r&#225;pida de comandos</h2>
   </div>
   <h3>Instalaci&#243;n (una vez)</h3>
   <table>
     <tr><th>Comando</th><th>Qu&#233; hace</th></tr>
-    <tr><td><code>PowerShell -ExecutionPolicy Bypass -File setup.ps1</code></td><td>Instalador autom&#225;tico.</td></tr>
+    <tr><td><code>PowerShell -ExecutionPolicy Bypass -File setup.ps1</code></td><td>Instalador autom&#225;tico (Opci&#243;n B).</td></tr>
+    <tr><td><code>npm i -g @microsoft/powerbi-report-authoring-cli @microsoft/powerbi-desktop-bridge-cli</code></td><td>Las 2 CLIs de Fabric.</td></tr>
     <tr><td><code>/plugin marketplace add microsoft/skills-for-fabric</code></td><td>Registra el marketplace de skills de Fabric.</td></tr>
     <tr><td><code>/plugin install powerbi-authoring@fabric-collection</code></td><td>Instala las skills de autor&#237;a + el MCP de modelado.</td></tr>
-    <tr><td><code>npm i -g @microsoft/powerbi-report-authoring-cli @microsoft/powerbi-desktop-bridge-cli</code></td><td>Las 2 CLIs de Fabric.</td></tr>
+  </table>
+  <h3>Comprobar que qued&#243; bien</h3>
+  <table>
+    <tr><th>Comando</th><th>Debe responder</th></tr>
+    <tr><td><code>node --version</code></td><td>Una versi&#243;n LTS (v20 o superior).</td></tr>
+    <tr><td><code>powerbi-report-author --help</code></td><td>La ayuda de la CLI.</td></tr>
+    <tr><td><code>powerbi-desktop status</code></td><td>Las instancias de Power BI abiertas y su PID.</td></tr>
+    <tr><td><code>dir %USERPROFILE%\.claude\skills</code></td><td>Las 5 carpetas de skills.</td></tr>
   </table>
   <h3>Comandos que usa Claude al construir</h3>
   <table>
     <tr><th>Comando</th><th>Qu&#233; hace</th></tr>
     <tr><td><code>node _gen/hybrid.js</code></td><td>Escribe los visuales del reporte.</td></tr>
     <tr><td><code>powerbi-report-author validate &lt;Reporte&gt;.Report</code></td><td>Valida el reporte (los avisos "Unknown visualType" de los custom visuals son normales).</td></tr>
-    <tr><td><code>powerbi-desktop status</code></td><td>Lista las instancias de PBI abiertas y su PID.</td></tr>
+    <tr><td><code>powerbi-desktop status</code></td><td>PID de la instancia y si hay cambios sin guardar.</td></tr>
     <tr><td><code>powerbi-desktop reload --pid &lt;PID&gt;</code></td><td>Recarga el reporte en la ventana abierta.</td></tr>
     <tr><td><code>powerbi-desktop screenshot-all --pid &lt;PID&gt;</code></td><td>Captura las p&#225;ginas.</td></tr>
   </table>
-  <p>No necesitas correr estos comandos a mano: Claude los ejecuta como parte del flujo. Est&#225;n aqu&#237; como referencia.</p>
+  <p>No necesitas correr estos comandos a mano: Claude los ejecuta como parte del flujo. Est&#225;n aqu&#237; como referencia y para diagnosticar.</p>
 </section>
 
-<section id="m2-sec8">
+<section id="m2-sec9">
   <div class="section-header">
-    <div class="section-number">8</div>
+    <div class="section-number">9</div>
     <h2>Soluci&#243;n de problemas frecuentes</h2>
   </div>
+  <h3>Instalaci&#243;n</h3>
   <table>
     <tr><th>S&#237;ntoma</th><th>Causa probable</th><th>Soluci&#243;n</th></tr>
     <tr>
@@ -1044,9 +1218,29 @@ Paleta: [color de acento en hex o nombre]</pre>
       <td>Reinstalar el plugin; reiniciar Claude Code; Power BI debe estar abierto</td>
     </tr>
     <tr>
-      <td>Power BI tarda much&#237;simo o se cuelga al refrescar los datos</td>
-      <td>Se intent&#243; cargar un dataset grande por el MCP</td>
-      <td>Cargar los datos con el bot&#243;n <strong>Actualizar</strong> de Power BI, a mano (Secci&#243;n 6)</td>
+      <td>Claude no reconoce "crea un dashboard"</td>
+      <td>Las skills no quedaron en <code>.claude\skills</code>, o falta reiniciar</td>
+      <td>Verificar que existan las 5 carpetas y que <code>powerbi-dashboard</code> tenga <code>SKILL.md</code>; reiniciar Claude Code</td>
+    </tr>
+  </table>
+
+  <h3>Al construir</h3>
+  <table>
+    <tr><th>S&#237;ntoma</th><th>Causa probable</th><th>Soluci&#243;n</th></tr>
+    <tr>
+      <td><strong>Desaparecieron los custom visuals del reporte</strong></td>
+      <td>Se recarg&#243; el reporte con los visuales importados pero sin guardar</td>
+      <td>Volver a importarlos y <strong>guardar con Ctrl+S</strong> antes de seguir (Secci&#243;n 4)</td>
+    </tr>
+    <tr>
+      <td>Las pills del Filtro salen como rect&#225;ngulos blancos vac&#237;os</td>
+      <td>Recorte vertical: la barra es m&#225;s baja que la pill</td>
+      <td>No es un problema de datos. La barra necesita &#8805;68&#160;px con fuente de 12&#160;px &#8212; el generador ya lo hace; si lo moviste a mano, dale m&#225;s alto</td>
+    </tr>
+    <tr>
+      <td>El Filtro aparece vac&#237;o / "importa el visual"</td>
+      <td>El <code>.pbiviz</code> no est&#225; importado en ese reporte</td>
+      <td>Es <strong>por reporte</strong>, no global: PBI &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo</td>
     </tr>
     <tr>
       <td>Una gr&#225;fica Deneb o una tarjeta sale en blanco</td>
@@ -1054,9 +1248,24 @@ Paleta: [color de acento en hex o nombre]</pre>
       <td>Importar el visual (Secci&#243;n 4); esperar unos segundos y volver a mirar</td>
     </tr>
     <tr>
-      <td>El Filtro aparece vac&#237;o / "importa el visual"</td>
-      <td>El <code>.pbiviz</code> no est&#225; importado en ese reporte</td>
-      <td>PBI &#8594; M&#225;s objetos visuales &#8594; Importar desde archivo &#8594; <code>FiltroGeneralUniversal.pbiviz</code></td>
+      <td>Agreg&#243; p&#225;ginas pero Power BI sigue mostrando las viejas</td>
+      <td>La recarga no reconstruye la navegaci&#243;n cuando cambia el conjunto de p&#225;ginas</td>
+      <td>Cerrar y reabrir Power BI. Claude lo hace solo; si lo est&#225;s haciendo a mano, &#225;brelo por ruta completa</td>
+    </tr>
+    <tr>
+      <td>Todos los visuales muestran el mismo n&#250;mero</td>
+      <td>Una relaci&#243;n a la dimensi&#243;n qued&#243; inactiva</td>
+      <td>Ped&#237;rselo a Claude: "revisa las relaciones del modelo"</td>
+    </tr>
+    <tr>
+      <td>Los meses salen en orden alfab&#233;tico</td>
+      <td>Falta el orden por columna en el nombre de mes</td>
+      <td>Claude lo pone al crear el calendario; si el modelo ya ven&#237;a hecho, p&#237;dele que lo corrija</td>
+    </tr>
+    <tr>
+      <td>Power BI tarda much&#237;simo o se cuelga al refrescar los datos</td>
+      <td>Se intent&#243; cargar un dataset grande por el MCP</td>
+      <td>Cargar los datos con el bot&#243;n <strong>Actualizar</strong> de Power BI, a mano (Secci&#243;n 6)</td>
     </tr>
     <tr>
       <td>Acentos raros en una tarjeta HTML (p. ej. "SATISFACCION")</td>
@@ -1069,6 +1278,10 @@ Paleta: [color de acento en hex o nombre]</pre>
       <td>Es normal; solo importan los <strong>errores</strong>, no esos avisos</td>
     </tr>
   </table>
+  <div class="box info">
+    <div class="box-title">Estos casos ya est&#225;n documentados dentro del sistema</div>
+    Claude lee un archivo de <em>gotchas</em> antes de construir, con estos errores y c&#243;mo evitarlos. Est&#225; en <code>.claude\skills\powerbi-dashboard\reference\GOTCHAS.md</code> por si quieres consultarlo t&#250;.
+  </div>
 </section>
 
 </div><!-- /content M2 -->
@@ -1085,6 +1298,41 @@ Paleta: [color de acento en hex o nombre]</pre>
 </footer>
 
 <script>
+function copyPrompt(btn) {
+  var pre = btn.parentElement.querySelector('pre');
+  var original = btn.dataset.label || btn.textContent;
+  btn.dataset.label = original;
+
+  var flash = function (text, ok) {
+    btn.textContent = text;
+    btn.classList.toggle('done', !!ok);
+    setTimeout(function () { btn.textContent = original; btn.classList.remove('done'); }, 2200);
+  };
+
+  // Selecciona el contenido: sirve como respaldo visible y habilita execCommand.
+  var selectAll = function () {
+    var range = document.createRange();
+    range.selectNodeContents(pre);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  };
+
+  // Respaldo para navegadores sin Clipboard API o sin permiso (p. ej. servido por http).
+  var legacy = function () {
+    selectAll();
+    var copied = false;
+    try { copied = document.execCommand('copy'); } catch (e) { copied = false; }
+    flash(copied ? 'Copiado' : 'Selecciona y Ctrl+C', copied);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(pre.textContent).then(function () { flash('Copiado', true); }, legacy);
+  } else {
+    legacy();
+  }
+}
+
 function showMethod(n) {
   document.getElementById('method1').style.display = n === 1 ? 'block' : 'none';
   document.getElementById('method2').style.display = n === 2 ? 'block' : 'none';
