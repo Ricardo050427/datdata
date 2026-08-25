@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -863,8 +863,6 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
   </table>
   <h3>Tipos de visuales que construye</h3>
   <ul>
-    <li><strong>Gr&#225;ficas</strong> con <strong>Deneb</strong> (Vega-Lite): interactivas; al hacer clic en una barra, el resto de gr&#225;ficas y tarjetas se filtran.</li>
-    <li><strong>Tarjetas KPI</strong> con <strong>HTML Content</strong>: una medida DAX que devuelve HTML, con badge de cambio vs. per&#237;odo anterior.</li>
     <li><strong>Barra de filtros</strong> con el visual <strong>Filtro</strong>: pills con b&#250;squeda, multi-select y color coordinado con el dashboard.</li>
     <li><strong>Navegaci&#243;n entre p&#225;ginas</strong>: navegador de p&#225;ginas que arma la skill de Fabric.</li>
   </ul>
@@ -875,7 +873,7 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
     <div class="section-number">2</div>
     <h2>Qu&#233; se instala</h2>
   </div>
-  <p>Todo el sistema son <strong>5 skills</strong> que se copian a <code>%USERPROFILE%\.claude\skills</code>. Al vivir ah&#237;, quedan disponibles en <strong>cualquier sesi&#243;n y cualquier carpeta</strong>: no hay que copiar nada por proyecto.</p>
+  <p>Todo el sistema viene <strong>empaquetado todo-en-uno con 12 skills</strong> que se copian a <code>%USERPROFILE%\.claude\skills</code> (y a <code>.gemini\config\skills</code> si usas Antigravity). Al vivir ah&#237;, quedan disponibles en <strong>cualquier sesi&#243;n y cualquier carpeta</strong>: no hay que copiar nada por proyecto ni instalar plugins por separado.</p>
   <div class="file-tree">
     <span class="folder">%USERPROFILE%\.claude\skills\</span><br>
     &nbsp;&nbsp;<span class="folder">powerbi-dashboard/</span>&nbsp;&nbsp;<span class="note">&#8592; el orquestador: dirige todo el flujo</span><br>
@@ -888,16 +886,23 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">hybrid.js</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; el generador de los visuales</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">FiltroGeneralUniversal.pbiviz</span>&nbsp;&nbsp;<span class="note">&#8592; el visual Filtro</span><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">filtro-template/</span>&nbsp;&nbsp;<span class="note">&#8592; base para compilar un filtro a medida</span><br>
-    &nbsp;&nbsp;<span class="folder">deneb-chart-generator/</span>&nbsp;&nbsp;<span class="note">&#8592; plantillas de gr&#225;ficas Vega-Lite</span><br>
-    &nbsp;&nbsp;<span class="folder">html-kpi-cards/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; tarjetas KPI en HTML</span><br>
-    &nbsp;&nbsp;<span class="folder">powerbi-filter/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; la barra de filtros</span><br>
-    &nbsp;&nbsp;<span class="folder">powerbi-dax-auditor/</span>&nbsp;&nbsp;&nbsp;<span class="note">&#8592; audita el modelo antes de construir</span>
+    &nbsp;&nbsp;<span class="folder">powerbi-report-design/</span>&nbsp;&nbsp;<span class="note">&#8592; arquetipos de diseño, cuadr&#237;cula 8-px, color y tipograf&#237;a</span><br>
+    &nbsp;&nbsp;<span class="folder">powerbi-report-planning/</span>&nbsp;&nbsp;<span class="note">&#8592; arquitectura de informaci&#243;n y jerarqu&#237;a de KPIs</span><br>
+    &nbsp;&nbsp;<span class="folder">powerbi-report-authoring/</span>&nbsp;&nbsp;<span class="note">&#8592; mec&#225;nicas PBIR, tarjetas, tablas y formato</span><br>
+    &nbsp;&nbsp;<span class="folder">semantic-model-authoring/</span>&nbsp;&nbsp;<span class="note">&#8592; optimizaci&#243;n DAX, star schema y TMDL</span><br>
+    &nbsp;&nbsp;<span class="folder">semantic-model-consumption/</span>&nbsp;&nbsp;<span class="note">&#8592; consultas de descubrimiento de esquema</span><br>
+    &nbsp;&nbsp;<span class="folder">powerbi-report-management/</span>&nbsp;&nbsp;<span class="note">&#8592; ciclo de vida y gesti&#243;n de reportes</span><br>
+    &nbsp;&nbsp;<span class="folder">deneb-chart-generator/</span>&nbsp;&nbsp;<span class="note">&#8592; plantillas de gr&#225;ficas Vega-Lite con cross-filtering</span><br>
+    &nbsp;&nbsp;<span class="folder">html-kpi-cards/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; tarjetas KPI en HTML/CSS fluido</span><br>
+    &nbsp;&nbsp;<span class="folder">powerbi-filter/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; barra de filtros y orden en espa&#241;ol</span><br>
+    &nbsp;&nbsp;<span class="folder">powerbi-dax-auditor/</span>&nbsp;&nbsp;&nbsp;<span class="note">&#8592; audita el modelo antes de construir</span><br>
+    &nbsp;&nbsp;<span class="folder">check-updates/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">&#8592; verificaci&#243;n de versiones</span>
   </div>
-  <p style="margin-top:16px;"><a href="EXPORTAR.zip" download style="display:inline-block;padding:9px 22px;background:var(--accent);color:#fff;border-radius:8px;font-weight:700;font-size:13px;text-decoration:none;">Descargar paquete (EXPORTAR.zip)</a></p>
-  <p>El ZIP trae esas 5 skills, el instalador <code>setup.ps1</code> y <code>INSTALAR-CON-IA.md</code> con el prompt de la Secci&#243;n 3.</p>
-  <div class="box info">
-    <div class="box-title">Las skills de Fabric se instalan aparte</div>
-    El pipeline oficial (planificaci&#243;n, dise&#241;o, posicionamiento, validaci&#243;n) lo aportan las <strong>skills de Microsoft Fabric</strong>, que se instalan como <em>plugin</em> desde su marketplace p&#250;blico (Secci&#243;n 3). Ese mismo plugin trae el <strong>MCP de modelado</strong>, que es lo que crea las tablas, relaciones y medidas DAX.
+  <p style="margin-top:16px;"><a href="EXPORTAR.zip" download style="display:inline-block;padding:9px 22px;background:var(--accent);color:#fff;border-radius:8px;font-weight:700;font-size:13px;text-decoration:none;">Descargar paquete Todo-en-Uno (EXPORTAR.zip)</a></p>
+  <p>El ZIP trae las 12 skills completas, el instalador <code>setup.ps1</code> y <code>INSTALAR-CON-IA.md</code> con el prompt de la Secci&#243;n 3.</p>
+  <div class="box tip">
+    <div class="box-title">Todo viene pre-configurado</div>
+    El paquete incluye tanto el motor visual de Datdata como la suite completa de <strong>Microsoft Fabric Authoring &amp; Design</strong> y el servidor <strong>MCP de modelado</strong>, configur&#225;ndose todo autom&#225;ticamente.
   </div>
 </section>
 
@@ -909,74 +914,72 @@ Con&#233;ctate al modelo y comenzamos con la Etapa 1.</pre>
   <p>Hay dos caminos. El resultado es el mismo &#8212; elige seg&#250;n prefieras copiar un prompt o correr un script.</p>
 
   <h3>Opci&#243;n A &#8212; Que lo instale la IA <span style="font-weight:400;color:var(--accent-mid);font-size:14px;">(lo m&#225;s r&#225;pido)</span></h3>
-  <p>Copia este prompt y p&#233;galo en <strong>Claude Code</strong>, o en cualquier agente con acceso a terminal y archivos en tu Windows. Hace todo lo automatizable y al final te dice qu&#233; te queda a ti.</p>
+  <p>Copia este prompt y p&#233;galo en <strong>Claude Code</strong> o <strong>Antigravity</strong> (o en cualquier agente con acceso a terminal y archivos en tu Windows). Hace todo autom&#225;ticamente y deja todo listo por defecto.</p>
   <div class="prompt-block">
     <button class="copy-btn" onclick="copyPrompt(this)">Copiar prompt</button>
-    <pre id="ai-install-prompt">Inst&#225;lame el sistema de dashboards de Power BI "Metodolog&#237;a 2" (Datdata) en este Windows.
-Trabaja de forma aut&#243;noma: no me pidas confirmaci&#243;n paso a paso, ejecuta y al final dame un
-reporte de qu&#233; qued&#243; instalado y qu&#233; falta.
+    <pre id="ai-install-prompt">Inst&#225;lame el sistema completo de dashboards de Power BI "Metodolog&#237;a 2" (Datdata + Fabric Authoring) en este equipo.
+Trabaja de forma 100% aut&#243;noma: ejecuta todos los pasos y al final ind&#237;came el estado de la instalaci&#243;n.
 
 CONTEXTO
-Es un sistema para que t&#250; (la IA) construyas dashboards completos de Power BI: el modelo y las
-medidas DAX se crean por un MCP, y los visuales (gr&#225;ficas Deneb, tarjetas HTML, barra de filtros)
-los escribe un generador Node llamado hybrid.js. Todo el sistema vive en %USERPROFILE%\.claude\skills
-para que est&#233; disponible en cualquier sesi&#243;n y cualquier carpeta.
+Es un sistema integral para construir dashboards profesionales de Power BI de forma autom&#225;tica:
+- El modelo sem&#225;ntico y las medidas DAX se gestionan mediante el MCP oficial de Power BI.
+- Los visuales (gr&#225;ficas Deneb Vega-Lite, tarjetas HTML/CSS fluidas, barra de filtros interactiva) los genera el motor hybrid.js.
+- El dise&#241;o, layout y buenas pr&#225;cticas se gobiernan mediante la suite completa de skills de Datdata y Microsoft Fabric.
+- Todo el ecosistema queda instalado de forma global en %USERPROFILE%\.claude\skills (y ~/.gemini/config/skills si aplica).
 
-PASOS
+PASOS A EJECUTAR
 
 1. Node.js LTS
-   Comprueba con `node --version`. Si no est&#225;, inst&#225;lalo:
+   Comprueba `node --version`. Si no est&#225; presente, inst&#225;lalo:
      winget install --id OpenJS.NodeJS.LTS -e --accept-source-agreements --accept-package-agreements
-   Despu&#233;s recarga el PATH del proceso antes de seguir.
+   Recarga el PATH del entorno antes de continuar.
 
-2. Las 2 CLIs de Fabric
-     npm i -g @microsoft/powerbi-report-authoring-cli @microsoft/powerbi-desktop-bridge-cli
-   Verifica que `powerbi-report-author --help` y `powerbi-desktop status` respondan.
-   Si dicen "no se reconoce", el PATH no se recarg&#243;: av&#237;same de que hay que reabrir la terminal.
+2. CLIs de Microsoft Fabric y MCP
+   Ejecuta:
+     npm i -g @microsoft/powerbi-report-authoring-cli @microsoft/powerbi-desktop-bridge-cli @microsoft/powerbi-modeling-mcp
+   Verifica que `powerbi-report-author --help` y `powerbi-desktop status` respondan correctamente.
 
-3. Las skills
-   Descarga y descomprime el paquete:
+3. Suite Completa de Skills
+   Descarga y descomprime el paquete Todo-en-Uno:
      https://ricardo050427.github.io/datdata/EXPORTAR.zip
-   Copia TODAS las carpetas de EXPORTAR\skills\ a %USERPROFILE%\.claude\skills\
-   Deben quedar 5: powerbi-dashboard, deneb-chart-generator, html-kpi-cards,
-   powerbi-filter, powerbi-dax-auditor.
-   Si alguna ya exist&#237;a, resp&#225;ldala (ren&#243;mbrala con sufijo .bak_&lt;fecha&gt;) antes de sobrescribir.
-   Verifica que exista %USERPROFILE%\.claude\skills\powerbi-dashboard\assets\hybrid.js
+   Copia TODAS las carpetas de skills incluidas a %USERPROFILE%\.claude\skills\ (y a %USERPROFILE%\.gemini\config\skills si existe .gemini):
+     - powerbi-dashboard (orquestador + hybrid.js + visual Filtro)
+     - powerbi-report-design (arquetipos, grids de dise&#241;o, color y tipograf&#237;a)
+     - powerbi-report-planning (arquitectura de informaci&#243;n y KPIs)
+     - powerbi-report-authoring (formato y mec&#225;nicas PBIR)
+     - semantic-model-authoring (DAX de alto rendimiento y modelos estrella)
+     - semantic-model-consumption (consultas de descubrimiento)
+     - powerbi-report-management
+     - deneb-chart-generator (Vega-Lite interactivo y cross-filtering)
+     - html-kpi-cards (tarjetas de KPI y deltas en HTML/CSS)
+     - powerbi-filter (barra de filtros y ordenamiento en espa&#241;ol)
+     - powerbi-dax-auditor (auditor&#237;a de calidad del modelo)
+     - check-updates
+   (Si alguna ya exist&#237;a, respalda la anterior con sufijo .bak_&lt;fecha&gt; antes de sobreescribir).
 
-4. El marketplace de skills de Fabric
-   Edita %USERPROFILE%\.claude\settings.json (resp&#225;ldalo antes) y a&#241;ade:
-     "extraKnownMarketplaces": {
-       "fabric-collection": {
-         "source": { "source": "git", "url": "https://github.com/microsoft/skills-for-fabric.git" }
-       }
-     }
-   Si el JSON existente no es v&#225;lido, no lo toques y d&#237;melo.
+4. Pre-configuraci&#243;n de Servidores MCP y Plugins
+   - En %USERPROFILE%\.claude\settings.json registra el marketplace 'fabric-collection' (https://github.com/microsoft/skills-for-fabric.git) y activa 'powerbi-authoring@fabric-collection'.
+   - Si existe %USERPROFILE%\.gemini, a&#241;ade 'powerbi-modeling-mcp' a mcp_config.json.
 
-5. Comprobaci&#243;n final
-   Confirma que existen y funcionan:
+5. Verificaci&#243;n Final
+   Confirma:
      - node --version
      - powerbi-report-author --help
      - powerbi-desktop status
-     - las 5 carpetas de skills, con sus SKILL.md
-     - hybrid.js parsea:  node --check &lt;ruta&gt;\powerbi-dashboard\assets\hybrid.js
+     - Sintaxis de hybrid.js: node --check &lt;ruta&gt;\powerbi-dashboard\assets\hybrid.js
+     - Total de skills instaladas y operativas.
 
-LO QUE NO PUEDES HACER T&#218; &#8212; d&#237;melo al final, con estas palabras exactas:
-   a) Instalar el plugin de Fabric. Yo tengo que escribir en Claude Code:
-        /plugin marketplace add microsoft/skills-for-fabric
-        /plugin install powerbi-authoring@fabric-collection
-      y reiniciar Claude Code. Ese plugin trae el MCP de modelado.
-   b) Instalar Power BI Desktop y activar el formato de proyecto:
-      Archivo &gt; Opciones &gt; Caracter&#237;sticas de vista previa &gt; Power BI Project (.pbip)
-   c) Importar los 3 custom visuals en CADA reporte nuevo: Deneb y HTML Content desde AppSource,
-      y el Filtro desde archivo (est&#225; en
-      %USERPROFILE%\.claude\skills\powerbi-dashboard\assets\FiltroGeneralUniversal.pbiviz).
-      Despu&#233;s de importarlos hay que GUARDAR con Ctrl+S antes de pedirte un dashboard.
+LO QUE HAGO YO POR CADA REPORTE NUEVO:
+   1. Activar el formato PBIP en Power BI Desktop (Archivo &gt; Opciones &gt; Caracter&#237;sticas de vista previa &gt; Guardar proyectos de Power BI).
+   2. Importar Deneb y HTML Content desde AppSource.
+   3. Importar el visual Filtro desde archivo (%USERPROFILE%\.claude\skills\powerbi-dashboard\assets\FiltroGeneralUniversal.pbiviz).
+   4. Guardar con Ctrl+S antes de pedir el dashboard.
 
-No instales Python: este sistema no lo usa.</pre>
+No instales Python: este sistema no lo requiere.</pre>
   </div>
   <div class="box info">
-    <div class="box-title">Qu&#233; no puede hacer la IA por ti</div>
-    Instalar el plugin de Fabric (los comandos <code>/plugin</code> los tienes que escribir t&#250; en Claude Code), instalar Power BI Desktop, e importar los custom visuals en cada reporte. El prompt termina record&#225;ndotelo.
+    <div class="box-title">Qu&#233; queda de tu parte</div>
+    Solo abrir Power BI Desktop, activar el formato `.pbip` e importar los 3 custom visuals una vez por reporte. Todo lo dem&#225;s queda 100% configurado y automatizado.
   </div>
 
   <h3>Opci&#243;n B &#8212; Instalador de PowerShell</h3>
@@ -984,24 +987,14 @@ No instales Python: este sistema no lo usa.</pre>
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <h4>Ejecutar el instalador</h4>
+        <h4>Ejecutar el instalador Todo-en-Uno</h4>
         <p>Descarga y descomprime <code>EXPORTAR.zip</code>, abre PowerShell en esa carpeta y ejecuta:</p>
         <pre>PowerShell -ExecutionPolicy Bypass -File setup.ps1</pre>
-        <p>Verifica/instala Node.js, instala las 2 CLIs de Fabric, copia las 5 skills a <code>.claude\skills</code> y registra el marketplace. Imprime cada paso con OK / ! / X: los "!" son avisos (por ejemplo "reinicia la terminal"), no errores. Si ya ten&#237;as una versi&#243;n instalada, la respalda antes de sobrescribir.</p>
+        <p>Verifica/instala Node.js, instala las CLIs de Fabric y el MCP, copia las 12 skills a <code>.claude\skills</code> (y a <code>.gemini\config\skills</code> si aplica), y pre-configura el MCP y los plugins. Imprime cada paso con OK / ! / X. Si ya ten&#237;as versiones previas, las respalda autom&#225;ticamente antes de sobrescribir.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
-      <div class="step-content">
-        <h4>Instalar el plugin de skills de Fabric (en Claude Code)</h4>
-        <p>En una sesi&#243;n de Claude Code escribe:</p>
-        <pre>/plugin marketplace add microsoft/skills-for-fabric
-/plugin install powerbi-authoring@fabric-collection</pre>
-        <p>Ese plugin trae las skills de autor&#237;a de reportes <strong>y</strong> el MCP de modelado de Power BI (se ejecuta con <code>npx</code>). Reinicia Claude Code al terminar.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
       <div class="step-content">
         <h4>Power BI Desktop</h4>
         <p>Inst&#225;lalo desde la Microsoft Store o <strong>powerbi.microsoft.com/desktop</strong> y activa el formato de proyecto: <em>Archivo &#8594; Opciones &#8594; Caracter&#237;sticas de vista previa &#8594; Power BI Project (.pbip)</em>. El sistema trabaja sobre archivos <code>.pbip</code> (texto), no <code>.pbix</code>.</p>
