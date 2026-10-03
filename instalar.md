@@ -18,9 +18,14 @@ Funciona igual desde PowerShell, cmd o bash (Git Bash):
 powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://ricardo050427.github.io/datdata/instalar.ps1 | iex"
 ```
 
-- Tarda de 2 a 5 minutos la primera vez. Si tu herramienta de terminal tiene un límite de tiempo, dale al menos 10 minutos.
-- Necesita internet y escribir fuera de la carpeta del proyecto (en `%USERPROFILE%`).
-  En **Codex**, pide ejecutar fuera del sandbox; en **Antigravity**, el usuario debe aprobar el comando.
+- **Puedes revisarlo antes de ejecutarlo:** `instalar.ps1` solo descarga el paquete y ejecuta `setup.ps1`, que también está publicado en https://ricardo050427.github.io/datdata/setup.ps1.
+- **Tiempo:** tarda de 2 a 5 minutos la primera vez. Usa el límite de tiempo más alto de tu herramienta o ejecútalo en segundo plano y espera a que termine.
+- **Permisos:** necesita internet y escribir en `%USERPROFILE%`, fuera de la carpeta del proyecto.
+  - En **Codex**, pide ejecutar fuera del sandbox.
+  - En **Antigravity**, el usuario aprueba el comando.
+  - Si tu herramienta pide confirmación, pídesela al usuario.
+- **Node.js:** si falta, el instalador lo instala con winget y Windows puede mostrar un aviso de permisos (UAC). Avisa al usuario que lo acepte.
+- **PATH:** el instalador lo recarga por su cuenta; no hace falta abrir una terminal nueva.
 
 **Si no puedes usar `irm | iex`**, haz lo mismo en tres pasos desde PowerShell:
 
@@ -35,13 +40,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\datdata-m2\setup.
 La última línea del instalador dice el estado real:
 
 - `RESULTADO: OK (agentes: ...)` → todo quedó instalado. Ve al paso 3.
-- `RESULTADO: CON PROBLEMAS (...)` → lee los problemas listados, aplica la solución de esta tabla y vuelve a ejecutar el paso 1:
+- `RESULTADO: CON PROBLEMAS (...)` → lee los problemas listados y aplica la solución de esta tabla. Repite el paso 1 **una sola vez**; si vuelve a fallar, muéstrale al usuario los problemas y no sigas intentando.
 
 | Problema | Solución |
 | :--- | :--- |
-| Node.js no se pudo instalar o `npm` no está disponible | Instala Node.js LTS (`winget install --id OpenJS.NodeJS.LTS -e`) o pide al usuario que lo instale desde https://nodejs.org/. Luego abre una terminal nueva y repite el paso 1. |
-| `npm install` terminó con error | Lee las últimas líneas que mostró. Suele ser un proxy o falta de internet. Repite el paso 1. |
-| `powerbi-...` no quedó disponible en el PATH | Abre una terminal nueva y repite el paso 1. |
+| Node.js no se pudo instalar o `npm` no está disponible | El usuario rechazó el aviso de permisos o no hay winget. Pídele que instale Node.js LTS desde https://nodejs.org/ y repite el paso 1. |
+| `npm install` terminó con error | Lee las últimas líneas que mostró. Suele ser un proxy o falta de internet. |
+| `powerbi-...` no quedó disponible en el PATH | Suele resolverse repitiendo el paso 1. Si no, pide al usuario que reinicie el agente y vuelva a pedirte la instalación. |
 | No se pudo actualizar un archivo de configuración | El archivo tiene JSON inválido. El instalador no lo tocó: muéstraselo al usuario. |
 
 ## Paso 3 · Avisa al usuario

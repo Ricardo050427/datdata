@@ -8,4 +8,5 @@ Para instalar la Metodología 2 (Motor Automatizado), sigue las instrucciones de
 
 - [Instalar la Metodología 2 (instrucciones para agentes)](https://ricardo050427.github.io/datdata/instalar.md)
 - [Instalador de un comando](https://ricardo050427.github.io/datdata/instalar.ps1)
+- [Código del instalador (setup.ps1)](https://ricardo050427.github.io/datdata/setup.ps1)
 - [Paquete con las skills y setup.ps1](https://ricardo050427.github.io/datdata/EXPORTAR.zip)
