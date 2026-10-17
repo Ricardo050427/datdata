@@ -11,6 +11,8 @@
       [4] El MCP de Power BI en cada agente detectado
       [5] Verificación final con resultado real (OK o CON PROBLEMAS)
 
+    Volver a ejecutarlo actualiza la instalación: muestra la versión anterior, la nueva y sus novedades.
+
     No borra nada: lo que reemplaza se respalda en %USERPROFILE%\.datdata\respaldos\<fecha>.
     Los archivos de configuración se leen y escriben en UTF-8 sin BOM, sin alterar acentos.
 
@@ -39,6 +41,12 @@ $stamp     = Get-Date -Format "yyyyMMdd_HHmmss"
 $respaldos = Join-Path $perfil ".datdata\respaldos\$stamp"
 $utf8      = New-Object System.Text.UTF8Encoding($false)
 $TOTAL     = 5
+
+# Versión del paquete (archivo VERSION) y la que dejó instalada una ejecución anterior
+$archivoVersion = Join-Path $here "VERSION"
+$VERSION = if (Test-Path $archivoVersion) { ([IO.File]::ReadAllText($archivoVersion)).Trim() } else { "sin versión" }
+$versionInstalada = Join-Path $perfil ".datdata\version.txt"
+$versionPrevia = if (Test-Path $versionInstalada) { ([IO.File]::ReadAllText($versionInstalada)).Trim() } else { "" }
 
 $MCP_NOMBRE  = "powerbi-modeling-mcp"
 $MCP_PAQUETE = "@microsoft/powerbi-modeling-mcp@latest"
@@ -100,9 +108,12 @@ function Invoke-Externo($exe, [string[]]$argumentos) {
 Clear-Host
 Write-Host ""
 Write-Host "  ================================================================" -ForegroundColor Magenta
-Write-Host "    Datdata - Metodología 2 (Motor Automatizado)" -ForegroundColor Magenta
+Write-Host "    Datdata - Metodología 2 (Motor Automatizado) · versión $VERSION" -ForegroundColor Magenta
 Write-Host "    Claude Code · Codex · Antigravity" -ForegroundColor Magenta
 Write-Host "  ================================================================" -ForegroundColor Magenta
+if ($versionPrevia -eq "") { Write-Host "`n  Instalación nueva de la versión $VERSION." -ForegroundColor Gray }
+elseif ($versionPrevia -eq $VERSION) { Write-Host "`n  Ya tenías la versión $($VERSION): se reinstala igual." -ForegroundColor Gray }
+else { Write-Host "`n  Actualización: de la versión $versionPrevia a la $VERSION." -ForegroundColor Gray }
 
 if (-not (Test-Path $skillsSrc)) {
     Write-Host "`n  X No se encontró la carpeta 'skills' junto a setup.ps1." -ForegroundColor Red
@@ -299,6 +310,7 @@ if ($detectados -contains "antigravity") {
 Write-Step 5 "Verificación final"
 $hybrid = Join-Path $perfil ".claude\skills\powerbi-dashboard\assets\hybrid.js"
 $pbiviz = Join-Path $perfil ".claude\skills\powerbi-dashboard\assets\FiltroGeneralUniversal.pbiviz"
+$pbivizPlus = Join-Path $perfil ".claude\skills\powerbi-dashboard\assets\FiltroUniversal+.pbiviz"
 if ((Test-Path $hybrid) -and (Get-Command node -ErrorAction SilentlyContinue)) {
     $out = Invoke-Externo "node" @("--check", $hybrid)
     if ($LASTEXITCODE -eq 0) { Write-OK "hybrid.js válido." } else { Write-Fail "hybrid.js tiene errores de sintaxis: $($out -join ' ')" }
@@ -306,6 +318,7 @@ if ((Test-Path $hybrid) -and (Get-Command node -ErrorAction SilentlyContinue)) {
     Write-Fail "No se encontró hybrid.js en $hybrid"
 }
 if (Test-Path $pbiviz) { Write-OK "Visual Filtro listo en $pbiviz" } else { Write-Fail "No se encontró el visual Filtro en $pbiviz" }
+if (Test-Path -LiteralPath $pbivizPlus) { Write-OK "Visual Filtro Universal+ listo en $pbivizPlus" } else { Write-Fail "No se encontró el visual Filtro Universal+ en $pbivizPlus" }
 if (Test-Path $respaldos) { Write-OK "Respaldo de lo reemplazado en $respaldos" }
 
 # ==============================================================================
@@ -313,7 +326,22 @@ if (Test-Path $respaldos) { Write-OK "Respaldo de lo reemplazado en $respaldos" 
 # ==============================================================================
 Write-Host ("`n" + "-" * 64) -ForegroundColor DarkGray
 if ($script:problemas.Count -eq 0) {
-    Write-Host "`n  INSTALACIÓN COMPLETA" -ForegroundColor Green
+    Write-Host "`n  INSTALACIÓN COMPLETA · versión $VERSION" -ForegroundColor Green
+    try { Write-TextFile $versionInstalada $VERSION } catch { Write-Warn "No se pudo guardar la versión instalada en $versionInstalada" }
+    # Novedades de esta versión, si es una instalación nueva o una actualización
+    $archivoNovedades = Join-Path $here "NOVEDADES.md"
+    if ($versionPrevia -ne $VERSION -and (Test-Path $archivoNovedades)) {
+        $lineas = [IO.File]::ReadAllLines($archivoNovedades, [Text.Encoding]::UTF8)
+        $dentro = $false
+        $seccion = foreach ($l in $lineas) {
+            if ($l -match '^## ') { if ($dentro) { break }; $dentro = $l -match [regex]::Escape($VERSION) ; continue }
+            if ($dentro -and $l.Trim() -ne "") { $l }
+        }
+        if ($seccion) {
+            Write-Host "`n  NOVEDADES DE LA VERSIÓN $VERSION" -ForegroundColor Cyan
+            $seccion | ForEach-Object { Write-Host ("    " + ($_ -replace '\*\*', '' -replace '`', '')) -ForegroundColor White }
+        }
+    }
 } else {
     Write-Host "`n  LA INSTALACIÓN TERMINÓ CON $($script:problemas.Count) PROBLEMA(S):" -ForegroundColor Red
     $script:problemas | ForEach-Object { Write-Host "    - $_" -ForegroundColor Red }
@@ -325,12 +353,13 @@ Write-Host ""
 Write-Host "  POR CADA REPORTE NUEVO:" -ForegroundColor Cyan
 Write-Host "    1. Guarda el reporte como proyecto .pbip en Power BI Desktop." -ForegroundColor White
 Write-Host "    2. Importa Deneb y HTML Content desde AppSource." -ForegroundColor White
-Write-Host "    3. Importa el visual Filtro desde archivo: $pbiviz" -ForegroundColor White
+Write-Host "    3. Importa el visual Filtro desde archivo. Recomendado, el Filtro Universal+:" -ForegroundColor White
+Write-Host "       $pbivizPlus" -ForegroundColor White
 Write-Host "    4. Guarda con Ctrl+S y pide: `"Crea un dashboard del reporte que tengo abierto`"" -ForegroundColor White
 Write-Host ""
 
 if ($script:problemas.Count -eq 0) {
-    Write-Host "RESULTADO: OK (agentes: $($detectados -join ', '))"
+    Write-Host "RESULTADO: OK (versión $VERSION · agentes: $($detectados -join ', '))"
     exit 0
 } else {
     Write-Host "RESULTADO: CON PROBLEMAS ($($script:problemas.Count)) - $($script:problemas -join ' | ')"

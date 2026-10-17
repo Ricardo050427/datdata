@@ -2,7 +2,7 @@
 
 > Metodologías para construir dashboards de Power BI con agentes de IA (Claude Code, Codex, Antigravity).
 
-Para instalar la Metodología 2 (Motor Automatizado), sigue las instrucciones de instalar.md. No instales la Metodología 1.
+Para instalar o actualizar la Metodología 2 (Motor Automatizado), sigue las instrucciones de instalar.md. No instales la Metodología 1.
 
 ## Instalación
 
@@ -10,3 +10,5 @@ Para instalar la Metodología 2 (Motor Automatizado), sigue las instrucciones de
 - [Instalador de un comando](https://ricardo050427.github.io/datdata/instalar.ps1)
 - [Código del instalador (setup.ps1)](https://ricardo050427.github.io/datdata/setup.ps1)
 - [Paquete con las skills y setup.ps1](https://ricardo050427.github.io/datdata/EXPORTAR.zip)
+- [Versión publicada](https://ricardo050427.github.io/datdata/version.txt)
+- [Novedades de cada versión](https://ricardo050427.github.io/datdata/novedades.md)

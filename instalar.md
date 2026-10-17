@@ -9,6 +9,7 @@ Si el usuario te pidió instalar la Metodología 2 de Datdata, sigue estos pasos
   Configura cada agente que encuentre en el equipo: Claude Code, Codex (`~/.codex`) y Antigravity (`~/.gemini`).
 - **Requisitos:** Windows 10 u 11 con PowerShell 5.1 o superior e internet. No hace falta Python: no lo instales.
 - **Es seguro repetirlo:** no borra nada. Lo que reemplaza queda respaldado en `%USERPROFILE%\.datdata\respaldos\<fecha>`.
+- **También sirve para actualizar:** si el usuario pidió *actualizar* la Metodología 2, sigue estos mismos pasos. La versión publicada está en https://ricardo050427.github.io/datdata/version.txt y la instalada en `%USERPROFILE%\.datdata\version.txt`; las novedades, en https://ricardo050427.github.io/datdata/novedades.md.
 
 ## Paso 1 · Ejecuta el instalador
 
@@ -53,7 +54,7 @@ La última línea del instalador dice el estado real:
 
 Dile, en su idioma:
 
-1. Qué quedó instalado y en qué agentes (está en la salida del instalador).
+1. Qué quedó instalado, en qué agentes y qué versión (está en la salida del instalador). Si fue una actualización, resume las novedades que mostró.
 2. **Que cierre y vuelva a abrir su agente** para que cargue las skills y el MCP.
 3. Que, con un reporte abierto en Power BI Desktop, compruebe la conexión con esta frase:
    > Conéctate al modelo de Power BI que tengo abierto y lista las tablas
@@ -61,7 +62,7 @@ Dile, en su idioma:
 5. **Lo que hace el usuario por cada reporte nuevo:**
    1. Guardar el reporte como proyecto `.pbip` (Archivo → Opciones → Características de vista previa → Proyectos de Power BI).
    2. Importar Deneb y HTML Content desde AppSource.
-   3. Importar el visual Filtro desde archivo: `%USERPROFILE%\.claude\skills\powerbi-dashboard\assets\FiltroGeneralUniversal.pbiviz`.
+   3. Importar el visual Filtro desde archivo. Recomendado, el Filtro Universal+: `%USERPROFILE%\.claude\skills\powerbi-dashboard\assets\FiltroUniversal+.pbiviz`. El clásico sigue en `...\assets\FiltroGeneralUniversal.pbiviz`.
    4. Guardar con Ctrl+S y pedir: «Crea un dashboard del reporte que tengo abierto».
 
 ## Referencia: qué configura en cada agente
