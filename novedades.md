@@ -1,5 +1,10 @@
 # Novedades de la Metodología 2
 
+## 2.1.1 · 17 de octubre de 2026
+
+- **Las tarjetas ya no salen en blanco con HTML Content Secure.** `hybrid.js` revisa qué visuales tiene importados el reporte y usa ese: HTML Content normal o Secure (antes «lite»), y el filtro clásico o el Filtro Universal+.
+- **Si importaste los dos filtros,** el dashboard usa el clásico, como hasta ahora. Para usar el Filtro Universal+ en un dashboard, impórtalo solo a él o pídeselo a tu agente.
+
 ## 2.1.0 · 17 de octubre de 2026
 
 - **Nuevo visual Filtro Universal+** (`FiltroUniversal+.pbiviz`), junto al filtro de siempre:
