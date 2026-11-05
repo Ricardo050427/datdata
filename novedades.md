@@ -1,5 +1,13 @@
 # Novedades de la Metodología 2
 
+## 2.1.3 · 4 de noviembre de 2026
+
+- **La barra de filtros ya se puede usar a su tamaño normal.** Power BI recorta lo que sale del recuadro de un visual, así que los desplegables del filtro no se veían. Ahora, en el Filtro Universal+ (v2.1.0), al abrir un campo sus opciones aparecen en la misma barra, con «Listo» para volver.
+- **Los años salen de mayor a menor** en el Filtro Universal+. Se cambia en Formato → Comportamiento → Años.
+- **La barra se puede sincronizar entre páginas:** pídele a tu agente que lo que elijas en una página siga elegido en las demás.
+- **Los dashboards nuevos usan el Filtro Universal+** cuando tienes importados los dos filtros.
+- **Para tus reportes actuales:** vuelve a importar `FiltroUniversal+.pbiviz` para tener la versión nueva.
+
 ## 2.1.2 · 31 de octubre de 2026
 
 - **El lienzo se queda en 1440×1080** mientras no pidas otro tamaño. Antes el agente podía cambiarlo por su cuenta, por ejemplo a 1600×900 en un dashboard de una sola página.
